@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useRef } from "react";
 import gsap from "gsap";
+import { assetUrl } from "../utils/assetUrl.js";
 
 const HeroLandmark = lazy(() => import("./HeroLandmark.jsx"));
 const HeroMap3D = lazy(() => import("./HeroMap3D.jsx"));
@@ -55,7 +56,7 @@ export default function HeroScene() {
   return (
     <div className="hero-scene hero-map-scene" ref={root} aria-label="Interactive systems map of Phnom Penh">
       <div className="map-art-frame" ref={frame}>
-        <img src="/images/phnom-penh-systems-map-v1.png" alt="Stylized architectural map of Phnom Penh and its river confluence" />
+        <img src={assetUrl("images/phnom-penh-systems-map-v1.png")} alt="Stylized architectural map of Phnom Penh and its river confluence" />
         <Suspense fallback={null}>
           <HeroMap3D />
         </Suspense>
@@ -63,14 +64,14 @@ export default function HeroScene() {
         <Suspense fallback={null}>
           <HeroLandmark
             className="hero-landmark-logo"
-            url="/models/hero-logo-house.glb"
+            url={assetUrl("models/hero-logo-house.glb")}
             rotation={[-Math.PI / 2, 0, 0]}
             targetSize={2.25}
             cameraPosition={[0, 1.6, 7]}
           />
           <HeroLandmark
             className="hero-landmark-wat"
-            url="/models/hero-wat-phnom-stupa.glb"
+            url={assetUrl("models/hero-wat-phnom-stupa.glb")}
             rotation={[0, .35, 0]}
             targetSize={2.1}
             cameraPosition={[3.8, 3, 6.8]}

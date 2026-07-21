@@ -2,8 +2,9 @@ import { Suspense, useMemo } from 'react'
 import { Canvas, useLoader } from '@react-three/fiber'
 import { Box3, Vector3 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { assetUrl } from '../../utils/assetUrl.js'
 
-const MODEL_URL = '/models/header-logo-house.glb'
+const MODEL_URL = assetUrl('models/header-logo-house.glb')
 
 function LogoModel() {
   const gltf = useLoader(GLTFLoader, MODEL_URL)

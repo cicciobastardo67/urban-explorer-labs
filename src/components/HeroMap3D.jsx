@@ -3,8 +3,9 @@ import { Canvas, useLoader, useThree } from "@react-three/fiber";
 import { AnimationMixer, Color, LoopOnce } from "three";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { assetUrl } from "../utils/assetUrl.js";
 
-const MAP_URL = "/models/phnom-penh-camera-scroll.glb";
+const MAP_URL = assetUrl("models/phnom-penh-camera-scroll.glb");
 const CAMERA_NAME = "Camera.001";
 const BLENDER_FRAME_END = 250;
 const BLENDER_FPS = 24;
@@ -13,7 +14,7 @@ const ACCENT_EMISSIVE = "#112968";
 
 function configureDraco(loader) {
   const draco = new DRACOLoader();
-  draco.setDecoderPath("/draco/");
+  draco.setDecoderPath(assetUrl("draco/"));
   draco.setDecoderConfig({ type: "wasm" });
   loader.setDRACOLoader(draco);
 }

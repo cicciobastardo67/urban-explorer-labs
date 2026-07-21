@@ -52,7 +52,7 @@ export function Header() {
         gap: '24px',
       }}>
         {/* Brand */}
-        <a href="/" className="brand" aria-label="Urban Explorer Labs home" style={{
+        <a href={import.meta.env.BASE_URL} className="brand" aria-label="Urban Explorer Labs home" style={{
           display: 'flex',
           alignItems: 'center',
           gap: '12px',

@@ -2,6 +2,7 @@ import { Suspense, useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Box3, CatmullRomCurve3, MathUtils, RepeatWrapping, SRGBColorSpace, TextureLoader, Vector3 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { assetUrl } from "../utils/assetUrl.js";
 
 const routePoints = [
   new Vector3(5.9, 0.12, 25),
@@ -81,7 +82,7 @@ function CameraRig({ progress }) {
 }
 
 function Vehicle({ progress }) {
-  const model = usePreparedModel("/models/route-vehicle.glb", 3.2);
+  const model = usePreparedModel(assetUrl("models/route-vehicle.glb"), 3.2);
   const group = useRef(null);
   const point = useMemo(() => new Vector3(), []);
   const tangent = useMemo(() => new Vector3(), []);
@@ -106,7 +107,7 @@ function Vehicle({ progress }) {
 
 function World() {
   const progress = useRef(0);
-  const mapTexture = useLoader(TextureLoader, "/images/phnom-penh-square-map-v3.png");
+  const mapTexture = useLoader(TextureLoader, assetUrl("images/phnom-penh-square-map-v3.png"));
   useMemo(() => {
     mapTexture.colorSpace = SRGBColorSpace;
     mapTexture.anisotropy = 8;
@@ -132,11 +133,11 @@ function World() {
         <tubeGeometry args={[routeCurve, 180, .12, 8, false]} />
         <meshStandardMaterial color="#ff6f63" emissive="#ff5144" emissiveIntensity={1.6} roughness={.38} />
       </mesh>
-      <Landmark url="/models/logo-building.glb" position={[3, .15, 31]} rotation={[0, -.18, 0]} size={7.2} />
-      <Landmark url="/models/central-market.glb" position={[-5, .15, 15]} rotation={[0, .55, 0]} size={5.5} />
-      <Landmark url="/models/operations-office.glb" position={[7, .15, 8]} rotation={[0, -.3, 0]} size={5.2} />
-      <Landmark url="/models/pagoda.glb" position={[-8, .15, 20]} rotation={[0, .4, 0]} size={4.5} />
-      <Landmark url="/models/diamond-bridge.glb" position={[16, .15, 3]} rotation={[0, -1.05, 0]} size={7.5} />
+      <Landmark url={assetUrl("models/logo-building.glb")} position={[3, .15, 31]} rotation={[0, -.18, 0]} size={7.2} />
+      <Landmark url={assetUrl("models/central-market.glb")} position={[-5, .15, 15]} rotation={[0, .55, 0]} size={5.5} />
+      <Landmark url={assetUrl("models/operations-office.glb")} position={[7, .15, 8]} rotation={[0, -.3, 0]} size={5.2} />
+      <Landmark url={assetUrl("models/pagoda.glb")} position={[-8, .15, 20]} rotation={[0, .4, 0]} size={4.5} />
+      <Landmark url={assetUrl("models/diamond-bridge.glb")} position={[16, .15, 3]} rotation={[0, -1.05, 0]} size={7.5} />
       <Vehicle progress={progress} />
       <CameraRig progress={progress} />
     </>

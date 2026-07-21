@@ -2,6 +2,7 @@ import { Suspense, useMemo } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Box3, Vector3 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { assetUrl } from "../utils/assetUrl.js";
 
 function NormalizedModel({ url, rotation = [0.18, -0.7, 0], size = 2.4 }) {
   const gltf = useLoader(GLTFLoader, url);
@@ -38,7 +39,7 @@ export default function JourneyModel({ type = "vehicle" }) {
       <directionalLight position={[-4, 2, 1]} intensity={1.2} color="#8ebcff" />
       <Suspense fallback={null}>
         <NormalizedModel
-          url={isVehicle ? "/models/route-vehicle.glb" : "/models/street-signal.glb"}
+          url={isVehicle ? assetUrl("models/route-vehicle.glb") : assetUrl("models/street-signal.glb")}
           rotation={isVehicle ? [0, 0.2, 0] : [0.08, -0.48, 0]}
           size={isVehicle ? 2.65 : 2.65}
         />
