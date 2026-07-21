@@ -1,0 +1,13 @@
+node_modules/
+dist/
+output/
+.playwright-cli/
+.tools/
+design/
+scripts/
+tools/
+STITCH_HANDOFF/
+BRAND_SYSTEM.md
+WEBSITE_PLAN.md
+*.log
+.DS_Store
