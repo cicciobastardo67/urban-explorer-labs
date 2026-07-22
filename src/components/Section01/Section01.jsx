@@ -94,8 +94,8 @@ function SystemCard({ system, index }) {
           {system.description}
         </p>
 
-        <a href="#contact" className="btn btn-secondary system-cta" style={{ alignSelf: 'flex-start', marginTop: 'auto' }}>
-          Learn more →
+        <a href={`${import.meta.env.BASE_URL}${system.id}/`} className="btn btn-secondary system-cta" style={{ alignSelf: 'flex-start', marginTop: 'auto' }}>
+          Explore {system.name} →
         </a>
       </div>
     </motion.article>

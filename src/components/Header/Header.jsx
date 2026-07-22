@@ -17,11 +17,12 @@ export function Header() {
     return unsubscribe
   }, [scrollY])
 
+  const home = import.meta.env.BASE_URL
   const navLinks = [
-    { href: '#systems', label: 'Systems' },
-    { href: '#work', label: 'Work' },
-    { href: '#approach', label: 'Approach' },
-    { href: '#about', label: 'About' },
+    { href: `${home}#systems`, label: 'Systems' },
+    { href: `${home}#work`, label: 'Work' },
+    { href: `${home}#approach`, label: 'Approach' },
+    { href: `${home}#about`, label: 'About' },
   ]
 
   return (
@@ -100,7 +101,7 @@ export function Header() {
 
         {/* Desktop CTA */}
         <a
-          href="#contact"
+          href={`${home}#contact`}
           className="btn btn-primary header-cta"
           style={{ flexShrink: 0 }}
         >
@@ -141,7 +142,7 @@ export function Header() {
 
         {/* Mobile CTA */}
         <a
-          href="#contact"
+          href={`${home}#contact`}
           className="btn btn-primary header-cta-mobile"
           style={{ display: 'none', flexShrink: 0 }}
         >
@@ -193,7 +194,7 @@ export function Header() {
               </a>
             ))}
             <a
-              href="#contact"
+              href={`${home}#contact`}
               className="btn btn-primary"
               style={{ marginTop: '16px', width: '100%', textAlign: 'center' }}
               onClick={() => setMobileOpen(false)}

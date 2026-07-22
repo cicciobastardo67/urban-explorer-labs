@@ -6,9 +6,11 @@ import { Section03 } from './components/Section03'
 import { Section04 } from './components/Section04'
 import { Footer } from './components/Footer'
 import HeroMap3D from './components/HeroMap3D'
+import { ProductPage } from './components/ProductPage'
+import { productPages } from './productData'
 import { useEffect, useState } from 'react'
 
-function App() {
+function HomePage() {
   const [reduceMotion, setReduceMotion] = useState(false)
 
   useEffect(() => {
@@ -74,6 +76,12 @@ function App() {
       <Footer />
     </div>
   )
+}
+
+function App() {
+  const slug = window.location.pathname.split('/').filter(Boolean).at(-1)
+  const product = productPages[slug]
+  return product ? <ProductPage product={product} /> : <HomePage />
 }
 
 export default App

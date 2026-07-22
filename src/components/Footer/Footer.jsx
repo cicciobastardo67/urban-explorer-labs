@@ -36,7 +36,7 @@ export function Footer() {
         >
           {/* Brand Column */}
           <div className="footer-brand" style={{ maxWidth: '320px' }}>
-            <a href="/" className="footer-brand-link" aria-label="Urban Explorer Labs home" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+            <a href={import.meta.env.BASE_URL} className="footer-brand-link" aria-label="Urban Explorer Labs home" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
               <svg viewBox="0 0 48 48" width="40" height="40" fill="none" style={{ flexShrink: 0 }}>
                 <rect x="8" y="20" width="32" height="20" rx="2" fill="var(--white)" />
                 <path d="M24 8 L16 20 L16 40 L32 40 L32 20 Z" fill="var(--white)" />
@@ -77,9 +77,9 @@ export function Footer() {
               Systems
             </h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <li><a href="#systems" style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>LUYAGENT — Sales Automation</a></li>
-              <li><a href="#systems" style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KhmerADV — Media Automation</a></li>
-              <li><a href="#systems" style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KHAudit — Compliance & Documents</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}luyagent/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>LUYAGENT — Sales Automation</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}khmeradv/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KhmerADV — Media Automation</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}khaudit/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KHAudit — Compliance & Documents</a></li>
             </ul>
           </nav>
 
@@ -96,9 +96,9 @@ export function Footer() {
               Company
             </h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <li><a href="#approach" style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Approach</a></li>
-              <li><a href="#work" style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Work</a></li>
-              <li><a href="#about" style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>About</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}#approach`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Approach</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}#work`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Work</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}#about`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>About</a></li>
             </ul>
           </nav>
 
