@@ -13,7 +13,7 @@ function LogoModel() {
 
     // The source model was authored lying on its back. Rotate it into a
     // straight front view before measuring so it can be fitted precisely.
-    object.rotation.set(-Math.PI / 2, 0, Math.PI)
+    object.rotation.set(-Math.PI / 2, 0, 0)
     object.updateMatrixWorld(true)
 
     const bounds = new Box3().setFromObject(object)
