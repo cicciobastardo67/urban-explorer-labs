@@ -14,6 +14,8 @@ export default defineConfig({
         luyagent: resolve('luyagent/index.html'),
         khmeradv: resolve('khmeradv/index.html'),
         khaudit: resolve('khaudit/index.html'),
+        hermesPost: resolve('hermes-post/index.html'),
+        kramos: resolve('kramos/index.html'),
       },
     },
   },

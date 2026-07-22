@@ -11,7 +11,7 @@ const systems = [
     number: '01',
     category: 'Sales Automation',
     name: 'LUYAGENT',
-    description: 'Sales automation that follows your products, customers, and order data—helping teams respond with context and confidence.',
+    description: 'Telegram sales automation that connects catalog, cart, payment review, confirmation and human handoff.',
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M24 6C14.06 6 6 14.06 6 24s8.06 18 18 18 18-8.06 18-18S33.94 6 24 6z" />
@@ -22,9 +22,9 @@ const systems = [
   {
     id: 'khmeradv',
     number: '02',
-    category: 'Media Automation',
+    category: 'Agency Media Operations',
     name: 'KhmerADV',
-    description: 'Local-first media workflows that generate, adapt, and publish content at scale—on brand and on time.',
+    description: 'Multi-brand campaign production, approval and publishing from one controlled agency workspace.',
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
         <rect x="6" y="10" width="36" height="28" rx="3" />
@@ -33,11 +33,24 @@ const systems = [
     ),
   },
   {
-    id: 'khaudit',
+    id: 'hermes-post',
     number: '03',
+    category: 'Small Business Content',
+    name: 'Hermes Post',
+    description: 'A simple idea-to-post assistant for shops, bloggers, creators and owner-led businesses.',
+    icon: (
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M10 12h28v24H10z" /><path d="M16 19h16M16 25h10M16 31h7" strokeLinecap="round" />
+        <path d="M34 31l5 5" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    id: 'kramos',
+    number: '04',
     category: 'Compliance & Documents',
-    name: 'KHAudit',
-    description: 'Intelligent document processing and compliance automation built for Cambodian regulations and internal policies.',
+    name: 'KramOS',
+    description: 'Evidence-first document compliance with deterministic checks and human approval for Cambodian operations.',
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M14 6h20a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4z" />
@@ -165,7 +178,7 @@ export function Section01() {
                 fontFamily: 'var(--font-latin)',
               }}
             >
-              <WeightHoverText label="Three systems. One private foundation." />
+              <WeightHoverText label="Four systems. One accountable foundation." />
             </h2>
           </div>
         </motion.div>
@@ -261,7 +274,6 @@ export function Section01() {
           transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 }}
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '32px',
           }}
         >

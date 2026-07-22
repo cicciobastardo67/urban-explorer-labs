@@ -16,7 +16,7 @@ Do not position Urban Explorer Labs as a generic software agency, chatbot vendor
 
 | Product | Position | First buyer | Commercial role |
 |---|---|---|---|
-| KHAudit | Evidence-linked audit-readiness workspace | Factory compliance/HR manager and GM | Flagship, high-value B2B offer |
+| KramOS | Evidence-first compliance command center | Factory compliance/HR manager and GM | Controlled local pilot and flagship B2B offer |
 | LUYAGENT | Private conversational sales system | Cambodian social-commerce owner | Broader SME offer |
 | KhmerADV | Controlled brief-to-publish production workflow | Marketing/operations lead | Demonstration product and cross-sell |
 
@@ -69,13 +69,13 @@ The form preselects the product and asks company, role, current workflow, volume
 
 **Defensible message:** Never lose a chat order. Keep customer, payment, stock, and order records on infrastructure you control.
 
-## Page brief — KHAudit
+## Page brief — KramOS
 
-**SEO title:** KHAudit | Evidence-Linked Compliance & Document Intelligence
+**SEO title:** KramOS | Evidence-First Compliance Command Center
 
 **Hero:** Turn document piles into evidence-linked review workflows.
 
-**Subhead:** KHAudit reads PDF, DOCX, and scanned documents in Khmer, English, and Chinese; extracts key fields; applies deterministic checks; and gives reviewers cited findings and clear next actions.
+**Subhead:** KramOS reviews operational documents with deterministic checks, connects findings to their source evidence, and keeps the final decision with a qualified reviewer.
 
 **Workflow proof:** ingest → OCR/layout extraction → structured fields → rule checks → cited finding/page/confidence → reviewer correction/approval → export package and audit trail.
 
@@ -118,7 +118,7 @@ Every public claim must be tagged internally as one of:
 
 Before page copy is finalized, lock these facts:
 
-1. Customer-facing names: LUYAGENT versus AgentKhmer; KHAudit versus Agent Khmer OS; KhmerADV versus Hermes Media.
+1. Customer-facing names are now LUYAGENT, KramOS, KhmerADV and Hermes Post.
 2. Production-ready channels and integrations for each product.
 3. Exact local/private boundary, including any optional external service.
 4. Pricing stance: quote-only, setup + subscription, hardware + subscription, or paid pilot.
@@ -162,7 +162,7 @@ Each pillar starts with one decision-stage product page and one searchable guide
 
 ### Days 16–45 — Pages and pilots
 
-- Build KHAudit first, then LUYAGENT, then KhmerADV.
+- Build KramOS first, then LUYAGENT, KhmerADV and Hermes Post.
 - Launch one paid design-partner pilot per product.
 - Implement real form delivery and analytics events.
 - Add first-party screenshots and explicit guardrails.
@@ -178,7 +178,7 @@ Each pillar starts with one decision-stage product page and one searchable guide
 
 1. Fix the public 3D loading experience and add a durable fallback.
 2. Add a shared product-page shell and routing.
-3. Build KHAudit with verified proof and disclaimers.
+3. Build KramOS with verified proof and disclaimers.
 4. Build LUYAGENT with the order/KHQR/handoff workflow.
 5. Build KhmerADV with the brief/production/approval workflow.
 6. Replace simulated contact success with an approved delivery endpoint.

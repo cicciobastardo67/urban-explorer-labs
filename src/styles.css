@@ -121,7 +121,7 @@ button, input, textarea, select { color: inherit; }
 .system-track i:nth-child(2) { left: 34%; }
 .system-track i:nth-child(3) { left: 67%; }
 .system-track span { position: absolute; left: 1%; bottom: -.15rem; width: 99%; height: 2px; background: var(--blue); transform: scaleX(.33); transform-origin: left center; }
-.systems-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 5vw, 6rem); padding-left: 6.2rem; }
+.systems-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 4rem); padding-left: 6.2rem; }
 .system-card { min-height: 13rem; padding: .7rem .8rem .9rem 0; border-radius: .6rem; transition: transform .25s ease, background-color .25s ease; }
 .system-card:hover { transform: translateY(-5px); background: rgba(244,250,255,.45); }
 .system-type { color: var(--blue); font-size: .72rem; }

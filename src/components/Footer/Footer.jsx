@@ -77,9 +77,10 @@ export function Footer() {
               Systems
             </h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <li><a href={`${import.meta.env.BASE_URL}luyagent/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>LUYAGENT — Sales Automation</a></li>
-              <li><a href={`${import.meta.env.BASE_URL}khmeradv/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KhmerADV — Media Automation</a></li>
-              <li><a href={`${import.meta.env.BASE_URL}khaudit/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KHAudit — Compliance & Documents</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}luyagent/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>LUYAGENT - Seller Operations</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}khmeradv/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KhmerADV - Agency Media Operations</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}hermes-post/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Hermes Post - Small Business Content</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}kramos/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KramOS - Compliance & Documents</a></li>
             </ul>
           </nav>
 

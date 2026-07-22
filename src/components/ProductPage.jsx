@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Header } from './Header'
 import { Footer } from './Footer'
+import { ProductDataShow } from './ProductDataShow'
 
 export function ProductPage({ product }) {
   useEffect(() => {
@@ -16,9 +17,9 @@ export function ProductPage({ product }) {
       <main>
         <section className="product-hero"><div className="container product-hero-grid">
           <div><p className="product-eyebrow">{product.category}</p><h1>{product.title}</h1><p className="product-intro">{product.intro}</p>
-            <div className="product-actions"><a className="btn btn-primary" href={contactHref}>Request a private workflow assessment</a><a className="btn btn-secondary" href="#workflow">See how it works</a></div>
+            <div className="product-actions"><a className="btn btn-primary" href={contactHref}>{product.primaryCta}</a><a className="btn btn-secondary" href="#data-show">{product.secondaryCta}</a></div>
           </div>
-          <aside className="product-proof-card"><span>Built for</span><strong>{product.audience}</strong><div><i /><i /><i /></div></aside>
+          <aside className="product-proof-card"><span>Built for</span><strong>{product.audience}</strong><ul>{product.proof.map((item) => <li key={item}>{item}</li>)}</ul></aside>
         </div></section>
 
         <section className="product-section product-problem"><div className="container product-two-column"><h2>{product.problemTitle}</h2><ul>{product.problems.map((item) => <li key={item}>{item}</li>)}</ul></div></section>
@@ -31,7 +32,11 @@ export function ProductPage({ product }) {
           {product.workflow.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, '0')}</span>{step}</li>)}
         </ol></div></section>
 
+        <ProductDataShow initialView={product.dataView} />
+
         <section className="product-section"><div className="container product-two-column"><div><p className="product-kicker">Capabilities</p><h2>Built around the work—not a generic dashboard.</h2></div><ul className="product-capabilities">{product.capabilities.map((item) => <li key={item}>{item}</li>)}</ul></div></section>
+
+        <section className="product-disclaimer product-privacy"><div className="container"><strong>Deployment boundary</strong><p>{product.privacy}</p></div></section>
 
         {product.disclaimer && <section className="product-disclaimer"><div className="container"><strong>Human responsibility remains essential.</strong><p>{product.disclaimer}</p></div></section>}
 
@@ -39,7 +44,7 @@ export function ProductPage({ product }) {
 
         <section className="product-section product-faq"><div className="container"><p className="product-kicker">Questions</p><h2>Clear boundaries before implementation.</h2><div>{product.faqs.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></div></section>
 
-        <section className="product-final-cta"><div className="container"><p>{product.category}</p><h2>Bring us the workflow. We will map the practical next step.</h2><a className="btn btn-primary" href={contactHref}>Request a private workflow assessment</a></div></section>
+        <section className="product-final-cta"><div className="container"><p>{product.category}</p><h2>Bring us the workflow. We will map the practical next step.</h2><a className="btn btn-primary" href={contactHref}>{product.primaryCta}</a></div></section>
       </main>
       <Footer />
     </div>
