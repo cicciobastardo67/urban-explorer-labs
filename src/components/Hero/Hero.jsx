@@ -109,11 +109,7 @@ export function Hero() {
 
         {/* Right: interactive local globe */}
         {!isMobile && (
-          <div className="hero-globe-region" style={{ 
-            height: '100%', 
-            minHeight: '400px',
-            position: 'relative',
-          }}>
+          <div className="hero-globe-region">
             <Globe
               initialLatitude={16}
               graticuleColor="#000000"

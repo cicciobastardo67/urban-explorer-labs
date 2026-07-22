@@ -329,14 +329,20 @@ html {
 }
 
 .hero-globe-region {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
   min-width: 0;
-  height: min(66vh, 620px) !important;
+  height: auto;
+  aspect-ratio: 1;
   align-self: center;
+  justify-self: center;
 }
 
 .hero-globe {
   position: absolute;
-  inset: -8% -12% -8% -6%;
+  inset: 0;
+  overflow: hidden;
   cursor: grab;
   touch-action: none;
   -webkit-mask-image: radial-gradient(circle at center, #000 62%, transparent 79%);
