@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Component, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { Canvas, useLoader, useThree } from "@react-three/fiber";
 import { AnimationMixer, Color, LoopOnce } from "three";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
@@ -19,7 +19,27 @@ function configureDraco(loader) {
   loader.setDRACOLoader(draco);
 }
 
-function AnimatedMap({ reduceMotion }) {
+class MapErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { failed: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error) {
+    console.error("Unable to render the Phnom Penh 3D map", error);
+    this.props.onError?.();
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
+function AnimatedMap({ reduceMotion, onReady }) {
   const gltf = useLoader(GLTFLoader, MAP_URL, configureDraco);
   const { set, size, invalidate } = useThree();
   const scene = useMemo(() => {
@@ -61,6 +81,10 @@ function AnimatedMap({ reduceMotion }) {
   );
   const clip = gltf.animations[0];
   const mixer = useMemo(() => new AnimationMixer(scene), [scene]);
+
+  useEffect(() => {
+    onReady();
+  }, [onReady]);
 
   useEffect(() => {
     if (!animatedCamera || !clip) return undefined;
@@ -142,6 +166,9 @@ function AnimatedMap({ reduceMotion }) {
 
 export default function HeroMap3D({ reduceMotion = false }) {
   const [isMobile, setIsMobile] = useState(false);
+  const [loadState, setLoadState] = useState("loading");
+  const handleReady = useCallback(() => setLoadState("ready"), []);
+  const handleError = useCallback(() => setLoadState("error"), []);
 
   useEffect(() => {
     const updateViewport = () => setIsMobile(window.innerWidth < 768);
@@ -152,25 +179,38 @@ export default function HeroMap3D({ reduceMotion = false }) {
 
   return (
     <div
-      className="hero-map-canvas"
+      className={`hero-map-canvas is-${loadState}`}
       aria-hidden="true"
       style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
     >
-      <Canvas
-        frameloop="demand"
-        dpr={isMobile ? [1, 1.15] : [1, 1.4]}
-        camera={{ position: [0, 10, 20], fov: 50, near: 0.1, far: 2000 }}
-        gl={{
-          alpha: true,
-          antialias: true,
-          powerPreference: "high-performance",
-        }}
-      >
-        <color attach="background" args={[new Color("#eaf5ff")]} />
-        <Suspense fallback={null}>
-          <AnimatedMap reduceMotion={reduceMotion} />
-        </Suspense>
-      </Canvas>
+      <div
+        className="map-load-poster"
+        style={{ backgroundImage: `url(${assetUrl("images/phnom-penh-systems-map-v1.png")})` }}
+      />
+      {loadState !== "ready" && (
+        <div className="map-load-status">
+          {loadState === "error" ? "3D preview unavailable" : "Loading Phnom Penh 3D…"}
+        </div>
+      )}
+      <MapErrorBoundary onError={handleError}>
+        <Canvas
+          frameloop="demand"
+          dpr={isMobile ? [1, 1.15] : [1, 1.4]}
+          camera={{ position: [0, 10, 20], fov: 50, near: 0.1, far: 2000 }}
+          gl={{
+            alpha: true,
+            antialias: true,
+            powerPreference: "high-performance",
+          }}
+        >
+          <color attach="background" args={[new Color("#eaf5ff")]} />
+          <Suspense fallback={null}>
+            <AnimatedMap reduceMotion={reduceMotion} onReady={handleReady} />
+          </Suspense>
+        </Canvas>
+      </MapErrorBoundary>
     </div>
   );
 }
+
+useLoader.preload(GLTFLoader, MAP_URL, configureDraco);
