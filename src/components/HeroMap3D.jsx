@@ -6,11 +6,9 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { assetUrl } from "../utils/assetUrl.js";
 
 const MAP_URL = assetUrl("models/phnom-penh-camera-scroll.glb");
-const CAMERA_NAME = "Camera.001";
-const BLENDER_FRAME_END = 250;
+const CAMERA_NAME = "Camera";
+const BLENDER_FRAME_END = 500;
 const BLENDER_FPS = 24;
-const ACCENT_COLOR = "#2855e8";
-const ACCENT_EMISSIVE = "#112968";
 
 function configureDraco(loader) {
   const draco = new DRACOLoader();
@@ -42,36 +40,7 @@ class MapErrorBoundary extends Component {
 function AnimatedMap({ reduceMotion, onReady }) {
   const gltf = useLoader(GLTFLoader, MAP_URL, configureDraco);
   const { set, size, invalidate } = useThree();
-  const scene = useMemo(() => {
-    const object = gltf.scene.clone(true);
-
-    object.traverse((child) => {
-      if (!child.isMesh || !child.material) return;
-      const sourceMaterials = Array.isArray(child.material)
-        ? child.material
-        : [child.material];
-      const targetName = `${child.name} ${sourceMaterials.map((material) => material?.name || "").join(" ")}`;
-
-      if (!/(logo|explorer|house)/i.test(targetName)) return;
-
-      const accentMaterials = sourceMaterials.map((material) => {
-        const accent = material.clone();
-        accent.color?.set(ACCENT_COLOR);
-        accent.emissive?.set(ACCENT_EMISSIVE);
-        accent.emissiveIntensity = 0.18;
-        accent.roughness = 0.46;
-        accent.metalness = 0.06;
-        accent.needsUpdate = true;
-        return accent;
-      });
-
-      child.material = Array.isArray(child.material)
-        ? accentMaterials
-        : accentMaterials[0];
-    });
-
-    return object;
-  }, [gltf.scene]);
+  const scene = useMemo(() => gltf.scene.clone(true), [gltf.scene]);
   const animatedCamera = useMemo(
     () =>
       scene.getObjectByName(CAMERA_NAME) ||
