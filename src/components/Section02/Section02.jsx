@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { MeshText } from '../MeshText'
 import { WeightHoverText } from '../WeightHoverText'
+import { VisualOverview } from '../VisualOverview'
 
 const NOTEBOOK_ARTIFACT_URL = 'https://notebooklm.google.com/notebook/9baeee1e-40d1-4452-86e4-4632f448c536/artifact/713d7434-4bf9-493f-a303-23415ded44ae?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_'
 
@@ -337,6 +338,8 @@ export function Section02() {
             </h2>
           </div>
         </motion.div>
+
+        <VisualOverview />
 
         {/* Proof Bands */}
         <div className="proof-bands" style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Header } from './Header'
 import { Footer } from './Footer'
 import { ProductDataShow } from './ProductDataShow'
+import { VisualOverview } from './VisualOverview'
 
 export function ProductPage({ product }) {
   useEffect(() => {
@@ -33,6 +34,8 @@ export function ProductPage({ product }) {
         </ol></div></section>
 
         <ProductDataShow initialView={product.dataView} />
+
+        <VisualOverview compact productName={product.name} />
 
         <section className="product-section"><div className="container product-two-column"><div><p className="product-kicker">Capabilities</p><h2>Built around the work—not a generic dashboard.</h2></div><ul className="product-capabilities">{product.capabilities.map((item) => <li key={item}>{item}</li>)}</ul></div></section>
 
