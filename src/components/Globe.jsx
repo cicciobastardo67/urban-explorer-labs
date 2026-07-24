@@ -10,11 +10,30 @@ const DEFAULT_INITIAL_LONGITUDE = -105
 const DEFAULT_GRATICULE_COLOR = '#000000'
 const DEFAULT_DOT_COLOR = '#000000'
 const DEFAULT_OCEAN_COLOR = 'rgba(0, 0, 0, 0)'
+const CAPITAL_FLAG_HALF_LATITUDE = 2.275
+const CAPITAL_FLAG_HALF_LONGITUDE = 2.75
+const CAPITAL_FLAG_DOT_STEP = 0.17
 const LAND_GEOMETRY = feature(landTopology, landTopology.objects.land).features[0].geometry
 const CAMBODIA_GEOMETRY = feature(
   countriesTopology,
   countriesTopology.objects.countries,
 ).features.find((country) => country.id === '116').geometry
+
+const CAPITAL_FLAG_DOTS = [
+  { city: 'Rome', country: 'Italy', lat: 41.9028, lng: 12.4964, flag: 'italy' },
+  { city: 'Paris', country: 'France', lat: 48.8566, lng: 2.3522, flag: 'france' },
+  { city: 'Madrid', country: 'Spain', lat: 40.4168, lng: -3.7038, flag: 'spain' },
+  { city: 'Berlin', country: 'Germany', lat: 52.52, lng: 13.405, flag: 'germany' },
+  { city: 'London', country: 'United Kingdom', lat: 51.5074, lng: -0.1278, flag: 'united-kingdom' },
+  { city: 'Moscow', country: 'Russia', lat: 55.7558, lng: 37.6173, flag: 'russia' },
+  { city: 'Beijing', country: 'China', lat: 39.9042, lng: 116.4074, flag: 'china' },
+  { city: 'Shenzhen', country: 'China', lat: 22.5431, lng: 114.0579, flag: 'china' },
+  { city: 'Hanoi', country: 'Vietnam', lat: 21.0285, lng: 105.8542, flag: 'vietnam' },
+  { city: 'Bangkok', country: 'Thailand', lat: 13.7563, lng: 100.5018, flag: 'thailand' },
+  { city: 'Naypyidaw', country: 'Myanmar', lat: 19.7633, lng: 96.0785, flag: 'myanmar' },
+  { city: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503, flag: 'japan' },
+  { city: 'Seoul', country: 'South Korea', lat: 37.5665, lng: 126.978, flag: 'south-korea' },
+]
 
 function parseRgba(color) {
   const match = color.match(
@@ -140,6 +159,103 @@ function createDotLayer(positions, color, size = 0.014) {
   return new THREE.Points(geometry, material)
 }
 
+function isInsideStar(x, y, centerX, centerY, radius) {
+  const angle = Math.atan2(y - centerY, x - centerX) + Math.PI / 2
+  const distance = Math.hypot(x - centerX, y - centerY)
+  const sector = ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)
+  const pointRadius = radius * (
+    0.48
+    + 0.52 * Math.max(0, Math.cos(sector * 5))
+  )
+  return distance <= pointRadius
+}
+
+function flagDotColor(flag, u, v) {
+  if (flag === 'italy') return u < -1 / 3 ? '#009246' : u > 1 / 3 ? '#ce2b37' : '#ffffff'
+  if (flag === 'france') return u < -1 / 3 ? '#0055a4' : u > 1 / 3 ? '#ef4135' : '#ffffff'
+  if (flag === 'spain') return Math.abs(v) > 0.55 ? '#aa151b' : '#f1bf00'
+  if (flag === 'germany') return v > 1 / 3 ? '#000000' : v > -1 / 3 ? '#dd0000' : '#ffce00'
+  if (flag === 'russia') return v > 1 / 3 ? '#ffffff' : v > -1 / 3 ? '#0039a6' : '#d52b1e'
+  if (flag === 'thailand') {
+    if (Math.abs(v) < 0.34) return '#2d2a4a'
+    if (Math.abs(v) < 0.67) return '#ffffff'
+    return '#a51931'
+  }
+  if (flag === 'myanmar') {
+    if (isInsideStar(u, v, 0, 0, 0.55)) return '#ffffff'
+    return v > 1 / 3 ? '#fecb00' : v > -1 / 3 ? '#34b233' : '#ea2839'
+  }
+  if (flag === 'china') {
+    return isInsideStar(u, v, -0.42, 0.42, 0.27) ? '#ffde00' : '#de2910'
+  }
+  if (flag === 'vietnam') {
+    return isInsideStar(u, v, 0, 0, 0.46) ? '#ffde00' : '#da251d'
+  }
+  if (flag === 'japan') return Math.hypot(u, v) < 0.36 ? '#bc002d' : '#ffffff'
+  if (flag === 'south-korea') {
+    const distance = Math.hypot(u, v)
+    if (distance < 0.33) return v > 0 ? '#cd2e3a' : '#0047a0'
+    if (
+      (Math.abs(u) > 0.58 && Math.abs(v) > 0.42)
+      || (Math.abs(u) > 0.72 && Math.abs(v) > 0.24)
+    ) return '#000000'
+    return '#ffffff'
+  }
+  if (flag === 'united-kingdom') {
+    if (Math.abs(u) < 0.12 || Math.abs(v) < 0.15) return '#c8102e'
+    const diagonal = Math.min(Math.abs(v - u * 0.72), Math.abs(v + u * 0.72))
+    if (diagonal < 0.09) return '#c8102e'
+    if (diagonal < 0.18) return '#ffffff'
+    if (Math.abs(u) < 0.2 || Math.abs(v) < 0.25) return '#ffffff'
+    return '#012169'
+  }
+  return '#ffffff'
+}
+
+function makeCapitalFlagDots() {
+  const group = new THREE.Group()
+  const positionsByColor = new Map()
+
+  CAPITAL_FLAG_DOTS.forEach((marker) => {
+    const longitudeRadius = CAPITAL_FLAG_HALF_LONGITUDE
+      / Math.max(0.35, Math.cos(THREE.MathUtils.degToRad(marker.lat)))
+
+    for (
+      let latitudeOffset = -CAPITAL_FLAG_HALF_LATITUDE, row = 0;
+      latitudeOffset <= CAPITAL_FLAG_HALF_LATITUDE;
+      latitudeOffset += CAPITAL_FLAG_DOT_STEP, row += 1
+    ) {
+      const rowOffset = row % 2 === 0 ? 0 : CAPITAL_FLAG_DOT_STEP * 0.5
+
+      for (
+        let longitudeOffset = -longitudeRadius + rowOffset;
+        longitudeOffset <= longitudeRadius;
+        longitudeOffset += CAPITAL_FLAG_DOT_STEP
+      ) {
+        const u = longitudeOffset / longitudeRadius
+        const v = latitudeOffset / CAPITAL_FLAG_HALF_LATITUDE
+        if ((Math.abs(u) ** 4) + (Math.abs(v) ** 4) > 1) continue
+
+        const color = flagDotColor(marker.flag, u, v)
+        const positions = positionsByColor.get(color) ?? []
+        const point = latLngToVector3(
+          marker.lat + latitudeOffset,
+          marker.lng + longitudeOffset,
+          GLOBE_RADIUS * 1.022,
+        )
+        positions.push(point.x, point.y, point.z)
+        positionsByColor.set(color, positions)
+      }
+    }
+  })
+
+  positionsByColor.forEach((positions, color) => {
+    group.add(createDotLayer(positions, color, 0.021))
+  })
+
+  return group
+}
+
 // Natural Earth 1:50m land geometry is bundled locally. Sampling at a nearly
 // uniform spherical interval keeps coastlines recognisable without a texture.
 function makeLandDots(color) {
@@ -246,6 +362,7 @@ export default function Globe({
     })
     globe.add(makeGrid(gridMaterial))
     globe.add(makeLandDots(dotColor))
+    globe.add(makeCapitalFlagDots())
 
     scene.add(new THREE.HemisphereLight(0xdaf1ff, 0x06131b, 2.3))
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.5)
@@ -342,8 +459,15 @@ export default function Globe({
       canvas.removeEventListener('pointerleave', onPointerLeave)
       scene.traverse((object) => {
         object.geometry?.dispose()
-        if (Array.isArray(object.material)) object.material.forEach((material) => material.dispose())
-        else object.material?.dispose()
+        if (Array.isArray(object.material)) {
+          object.material.forEach((material) => {
+            material.map?.dispose()
+            material.dispose()
+          })
+        } else {
+          object.material?.map?.dispose()
+          object.material?.dispose()
+        }
       })
       renderer.dispose()
       canvas.remove()
@@ -355,7 +479,7 @@ export default function Globe({
       ref={containerRef}
       className={`hero-globe ${className}`.trim()}
       role="img"
-      aria-label="Interactive globe centered on Cambodia. Drag to rotate."
+      aria-label="Interactive dotted globe centered on Cambodia with flag-colored dot fields at selected world cities. Drag to rotate."
     />
   )
 }

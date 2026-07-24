@@ -4,7 +4,7 @@ import { useScrollReveal } from '../../hooks/useScrollReveal'
 import Globe from '../Globe'
 import { SpotlightText } from '../SpotlightText'
 
-export function Hero() {
+export function Hero({ mapMode = 'day' }) {
   const [isMobile, setIsMobile] = useState(false)
   const heroRef = useRef(null)
   const [revealRef] = useScrollReveal({ threshold: 0, rootMargin: '0px 0px -50px 0px' })
@@ -40,9 +40,19 @@ export function Hero() {
         top: 0,
         bottom: 0,
         width: isMobile ? '100%' : '58%',
-        background: isMobile 
-          ? 'linear-gradient(180deg, rgba(234,245,255,0.82) 0%, transparent 72%)'
-          : 'linear-gradient(90deg, rgba(234,245,255,0.92) 0%, rgba(234,245,255,0.72) 38%, transparent 100%)',
+        background: isMobile
+          ? mapMode === 'night'
+            ? 'linear-gradient(180deg, rgba(5,14,29,0.88) 0%, transparent 72%)'
+            : 'linear-gradient(180deg, rgba(234,245,255,0.82) 0%, transparent 72%)'
+          : mapMode === 'night'
+            ? 'linear-gradient(90deg, rgba(5,14,29,0.88) 0%, rgba(5,14,29,0.58) 42%, transparent 100%)'
+            : 'linear-gradient(90deg, rgba(234,245,255,0.82) 0%, rgba(234,245,255,0.52) 42%, transparent 100%)',
+        WebkitMaskImage: isMobile
+          ? 'none'
+          : 'linear-gradient(180deg, #000 0%, #000 48%, rgba(0,0,0,0.72) 68%, transparent 100%)',
+        maskImage: isMobile
+          ? 'none'
+          : 'linear-gradient(180deg, #000 0%, #000 48%, rgba(0,0,0,0.72) 68%, transparent 100%)',
         pointerEvents: 'none',
         zIndex: 1,
       }} />
@@ -50,7 +60,7 @@ export function Hero() {
       {/* Content */}
       <div className="container hero-content" style={{
         position: 'relative',
-        zIndex: 2,
+        zIndex: 3,
         display: 'grid',
         gridTemplateColumns: isMobile ? '1fr' : '1.35fr 1fr',
         gap: '24px',
@@ -74,7 +84,7 @@ export function Hero() {
               style={{
                 fontSize: isMobile
                   ? 'var(--hero-size-mobile)'
-                  : 'clamp(50px, 4.5vw, 64px)',
+                  : 'clamp(40px, 4.5vw, 64px)',
                 fontWeight: 'var(--hero-weight)',
                 lineHeight: 0.98,
                 letterSpacing: 'var(--hero-track)',
@@ -85,6 +95,8 @@ export function Hero() {
             >
               <SpotlightText
                 text={'Intelligent automation.\nBuilt for Cambodia.\nKept under your control.'}
+                dimColor="#000000"
+                brightColor="#ffffff"
               />
             </h1>
             <p className="body-text" style={{
@@ -107,13 +119,12 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Right: interactive local globe */}
         {!isMobile && (
           <div className="hero-globe-region">
             <Globe
               initialLatitude={16}
-              graticuleColor="#000000"
-              dotColor="#000000"
+              graticuleColor={mapMode === 'night' ? '#dbe8ff' : '#000000'}
+              dotColor={mapMode === 'night' ? '#f5f8ff' : '#000000'}
               oceanColor="rgba(0, 0, 0, 0)"
             />
           </div>

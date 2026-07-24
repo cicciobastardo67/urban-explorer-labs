@@ -11,9 +11,8 @@ export function Footer() {
       role="contentinfo"
       style={{
         position: 'relative',
-        background: 'rgba(9, 13, 17, 0.9)',
-        backdropFilter: 'blur(8px)',
-        color: 'var(--white)',
+        background: 'transparent',
+        color: 'var(--ink)',
         padding: '80px var(--gutter-desktop) 40px',
         overflow: 'hidden',
       }}
@@ -38,16 +37,16 @@ export function Footer() {
           <div className="footer-brand" style={{ maxWidth: '320px' }}>
             <a href={import.meta.env.BASE_URL} className="footer-brand-link" aria-label="Urban Explorer Labs home" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
               <svg viewBox="0 0 48 48" width="40" height="40" fill="none" style={{ flexShrink: 0 }}>
-                <rect x="8" y="20" width="32" height="20" rx="2" fill="var(--white)" />
-                <path d="M24 8 L16 20 L16 40 L32 40 L32 20 Z" fill="var(--white)" />
-                <rect x="20" y="24" width="8" height="16" rx="1" fill="var(--footer)" />
+                <rect x="8" y="20" width="32" height="20" rx="2" fill="var(--ink)" />
+                <path d="M24 8 L16 20 L16 40 L32 40 L32 20 Z" fill="var(--ink)" />
+                <rect x="20" y="24" width="8" height="16" rx="1" fill="var(--canvas)" />
                 <circle cx="24" cy="16" r="2" fill="var(--route-coral)" />
               </svg>
               <span style={{
                 fontSize: '15px',
                 fontWeight: 600,
                 letterSpacing: '0.05em',
-                color: 'var(--white)',
+                color: 'var(--ink)',
                 fontFamily: 'var(--font-latin)',
               }}>
                 URBAN EXPLORER LABS
@@ -56,7 +55,7 @@ export function Footer() {
             <p style={{
               fontSize: '15px',
               lineHeight: 1.6,
-              color: 'var(--footer-muted)',
+              color: 'var(--muted)',
               margin: 0,
               maxWidth: '280px',
             }}>
@@ -71,16 +70,16 @@ export function Footer() {
               fontWeight: 600,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: 'var(--footer-muted)',
+              color: 'var(--muted)',
               margin: '0 0 16px',
             }}>
               Systems
             </h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <li><a href={`${import.meta.env.BASE_URL}luyagent/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>LUYAGENT - Seller Operations</a></li>
-              <li><a href={`${import.meta.env.BASE_URL}khmeradv/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KhmerADV - Agency Media Operations</a></li>
-              <li><a href={`${import.meta.env.BASE_URL}hermes-post/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Hermes Post - Small Business Content</a></li>
-              <li><a href={`${import.meta.env.BASE_URL}kramos/`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KramOS - Compliance & Documents</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}luyagent/`} style={{ color: 'var(--ink)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>LUYAGENT - Seller Operations</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}khmeradv/`} style={{ color: 'var(--ink)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KhmerADV - Agency Media Operations</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}hermes-post/`} style={{ color: 'var(--ink)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Hermes Post - Small Business Content</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}kramos/`} style={{ color: 'var(--ink)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>KramOS - Compliance & Documents</a></li>
             </ul>
           </nav>
 
@@ -91,15 +90,15 @@ export function Footer() {
               fontWeight: 600,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: 'var(--footer-muted)',
+              color: 'var(--muted)',
               margin: '0 0 16px',
             }}>
               Company
             </h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <li><a href={`${import.meta.env.BASE_URL}#approach`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Approach</a></li>
-              <li><a href={`${import.meta.env.BASE_URL}#work`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Work</a></li>
-              <li><a href={`${import.meta.env.BASE_URL}#about`} style={{ color: 'var(--white)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>About</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}#approach`} style={{ color: 'var(--ink)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Approach</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}#work`} style={{ color: 'var(--ink)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Work</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}#about`} style={{ color: 'var(--ink)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>About</a></li>
             </ul>
           </nav>
 
@@ -110,13 +109,13 @@ export function Footer() {
               fontWeight: 600,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: 'var(--footer-muted)',
+              color: 'var(--muted)',
               margin: '0 0 16px',
             }}>
               Let's talk
             </h3>
-            <address style={{ fontStyle: 'normal', color: 'var(--footer-muted)', fontSize: '15px', lineHeight: 1.7 }}>
-              <a href="mailto:hello@urbanexplorerlabs.com" style={{ color: 'var(--white)', transition: 'color var(--transition-fast)' }}>
+            <address style={{ fontStyle: 'normal', color: 'var(--muted)', fontSize: '15px', lineHeight: 1.7 }}>
+              <a href="mailto:hello@urbanexplorerlabs.com" style={{ color: 'var(--ink)', transition: 'color var(--transition-fast)' }}>
                 hello@urbanexplorerlabs.com
               </a>
               <br />
@@ -132,7 +131,7 @@ export function Footer() {
           animate={{ opacity: isVisible ? 1 : 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
           style={{
-            borderTop: '1px solid rgba(185, 195, 203, 0.2)',
+            borderTop: '1px solid var(--line)',
             marginBottom: '32px',
           }}
         />
@@ -150,7 +149,7 @@ export function Footer() {
             flexWrap: 'wrap',
             gap: '16px',
             fontSize: '13px',
-            color: 'var(--footer-muted)',
+            color: 'var(--muted)',
           }}
         >
           <p style={{ margin: 0 }}>

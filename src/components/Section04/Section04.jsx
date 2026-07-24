@@ -79,7 +79,8 @@ export function Section04() {
             <div>
               <h2
                 id="contact-heading"
-                className="section-heading"
+                className="section-heading contact-heading"
+                aria-label="Bring us the workflow that wastes your team's time."
                 style={{
                   fontSize: 'var(--section-size-desktop)',
                   fontWeight: 700,
@@ -90,7 +91,12 @@ export function Section04() {
                   fontFamily: 'var(--font-latin)',
                 }}
               >
-                <WeightHoverText label="Bring us the workflow that wastes your team's time." />
+                <span className="contact-heading-line" aria-hidden="true">
+                  <WeightHoverText label="Bring us the workflow that" />
+                </span>
+                <span className="contact-heading-line" aria-hidden="true">
+                  <WeightHoverText label="wastes your team's time." />
+                </span>
               </h2>
             </div>
           </div>
@@ -120,7 +126,7 @@ export function Section04() {
                   required
                   style={{
                     width: '100%', padding: '14px 16px', borderRadius: '8px',
-                    border: '1px solid var(--line)', background: 'var(--surface)',
+                    border: '1px solid var(--line)', background: 'var(--field-surface)',
                     fontSize: 'var(--body-size)', color: 'var(--ink)',
                     transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast)',
                   }}
@@ -141,7 +147,7 @@ export function Section04() {
                   required
                   style={{
                     width: '100%', padding: '14px 16px', borderRadius: '8px',
-                    border: '1px solid var(--line)', background: 'var(--surface)',
+                    border: '1px solid var(--line)', background: 'var(--field-surface)',
                     fontSize: 'var(--body-size)', color: 'var(--ink)',
                     transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast)',
                   }}
@@ -164,7 +170,7 @@ export function Section04() {
                   onChange={handleChange}
                   style={{
                     width: '100%', padding: '14px 16px', borderRadius: '8px',
-                    border: '1px solid var(--line)', background: 'var(--surface)',
+                    border: '1px solid var(--line)', background: 'var(--field-surface)',
                     fontSize: 'var(--body-size)', color: 'var(--ink)',
                     transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast)',
                   }}
@@ -184,7 +190,7 @@ export function Section04() {
                   onChange={handleChange}
                   style={{
                     width: '100%', padding: '14px 16px', borderRadius: '8px',
-                    border: '1px solid var(--line)', background: 'var(--surface)',
+                    border: '1px solid var(--line)', background: 'var(--field-surface)',
                     fontSize: 'var(--body-size)', color: 'var(--ink)',
                     transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast)',
                   }}
@@ -206,7 +212,7 @@ export function Section04() {
                 required
                 style={{
                   width: '100%', padding: '14px 16px', borderRadius: '8px',
-                  border: '1px solid var(--line)', background: 'var(--surface)',
+                  border: '1px solid var(--line)', background: 'var(--field-surface)',
                   fontSize: 'var(--body-size)', color: 'var(--ink)',
                   transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast)',
                   cursor: 'pointer',
@@ -234,7 +240,7 @@ export function Section04() {
                 rows={5}
                 style={{
                   width: '100%', padding: '14px 16px', borderRadius: '8px',
-                  border: '1px solid var(--line)', background: 'var(--surface)',
+                  border: '1px solid var(--line)', background: 'var(--field-surface)',
                   fontSize: 'var(--body-size)', color: 'var(--ink)',
                   fontFamily: 'inherit', resize: 'vertical',
                   transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast)',

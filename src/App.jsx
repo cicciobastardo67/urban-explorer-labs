@@ -5,13 +5,16 @@ import { Section02 } from './components/Section02'
 import { Section03 } from './components/Section03'
 import { Section04 } from './components/Section04'
 import { Footer } from './components/Footer'
-import HeroMap3D from './components/HeroMap3D'
 import { ProductPage } from './components/ProductPage'
 import { productPages } from './productData'
+import { assetUrl } from './utils/assetUrl'
 import { useEffect, useState } from 'react'
 
 function HomePage() {
   const [reduceMotion, setReduceMotion] = useState(false)
+  const [mapMode, setMapMode] = useState(() => (
+    window.localStorage.getItem('urban-explorer-map-mode') === 'day' ? 'day' : 'night'
+  ))
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -31,6 +34,7 @@ function HomePage() {
       const progress = reduceMotion ? 0 : Math.min(Math.max(window.scrollY / scrollRange, 0), 1)
       const cameraX = Math.sin(progress * Math.PI * 2) * 28
       const cameraY = Math.cos(progress * Math.PI * 3) * 10
+      document.querySelector('.app')?.style.setProperty('--map-scroll', `${progress * 100}%`)
 
       sections.forEach((section, index) => {
         const rect = section.getBoundingClientRect()
@@ -59,15 +63,29 @@ function HomePage() {
     }
   }, [reduceMotion])
 
+  const toggleMapMode = () => {
+    setMapMode((currentMode) => {
+      const nextMode = currentMode === 'day' ? 'night' : 'day'
+      window.localStorage.setItem('urban-explorer-map-mode', nextMode)
+      return nextMode
+    })
+  }
+
+  const mapImage = mapMode === 'night'
+    ? 'images/phnom-penh-scroll-map-night-v2.png'
+    : 'images/phnom-penh-scroll-map-v2.png'
+
   return (
-    <div className="app" data-reduced-motion={reduceMotion}>
-      <div className="site-map-background" aria-hidden="true">
-        <HeroMap3D reduceMotion={reduceMotion} />
-      </div>
+    <div className="app" data-reduced-motion={reduceMotion} data-map-mode={mapMode}>
+      <div
+        className="site-map-background"
+        style={{ '--site-map-image': `url(${assetUrl(mapImage)})` }}
+        aria-hidden="true"
+      />
       <div className="site-map-wash" aria-hidden="true" />
-      <Header />
+      <Header mapMode={mapMode} onToggleMapMode={toggleMapMode} />
       <main className="site-content">
-        <Hero />
+        <Hero mapMode={mapMode} />
         <Section01 />
         <Section02 />
         <Section03 />
