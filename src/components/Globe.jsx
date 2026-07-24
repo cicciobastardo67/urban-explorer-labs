@@ -29,7 +29,6 @@ const CAPITAL_FLAG_DOTS = [
   { city: 'Beijing', country: 'China', lat: 39.9042, lng: 116.4074, flag: 'china' },
   { city: 'Shenzhen', country: 'China', lat: 22.5431, lng: 114.0579, flag: 'china' },
   { city: 'Hanoi', country: 'Vietnam', lat: 21.0285, lng: 105.8542, flag: 'vietnam' },
-  { city: 'Bangkok', country: 'Thailand', lat: 13.7563, lng: 100.5018, flag: 'thailand' },
   { city: 'Naypyidaw', country: 'Myanmar', lat: 19.7633, lng: 96.0785, flag: 'myanmar' },
   { city: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503, flag: 'japan' },
   { city: 'Seoul', country: 'South Korea', lat: 37.5665, lng: 126.978, flag: 'south-korea' },
@@ -176,11 +175,6 @@ function flagDotColor(flag, u, v) {
   if (flag === 'spain') return Math.abs(v) > 0.55 ? '#aa151b' : '#f1bf00'
   if (flag === 'germany') return v > 1 / 3 ? '#000000' : v > -1 / 3 ? '#dd0000' : '#ffce00'
   if (flag === 'russia') return v > 1 / 3 ? '#ffffff' : v > -1 / 3 ? '#0039a6' : '#d52b1e'
-  if (flag === 'thailand') {
-    if (Math.abs(v) < 0.34) return '#2d2a4a'
-    if (Math.abs(v) < 0.67) return '#ffffff'
-    return '#a51931'
-  }
   if (flag === 'myanmar') {
     if (isInsideStar(u, v, 0, 0, 0.55)) return '#ffffff'
     return v > 1 / 3 ? '#fecb00' : v > -1 / 3 ? '#34b233' : '#ea2839'

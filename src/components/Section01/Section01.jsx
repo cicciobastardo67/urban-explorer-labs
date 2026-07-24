@@ -10,12 +10,9 @@ const systems = [
     category: 'Sales Automation',
     name: 'LUYAGENT',
     description: 'Telegram sales automation that connects catalog, cart, payment review, confirmation and human handoff.',
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M24 6C14.06 6 6 14.06 6 24s8.06 18 18 18 18-8.06 18-18S33.94 6 24 6z" />
-        <path d="M24 14v10l7 7" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
+    artwork: 'images/systems/luyagent-artwork.png',
+    artworkAlt: 'LUYAGENT commerce automation connecting catalog, cart, review and human handoff',
+    steps: ['Catalog', 'Cart', 'Review', 'Handoff'],
   },
   {
     id: 'khmeradv',
@@ -23,12 +20,9 @@ const systems = [
     category: 'Agency Media Operations',
     name: 'KhmerADV',
     description: 'Multi-brand campaign production, approval and publishing from one controlled agency workspace.',
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <rect x="6" y="10" width="36" height="28" rx="3" />
-        <path d="M12 18h24M12 24h18M12 30h12" strokeLinecap="round" />
-      </svg>
-    ),
+    artwork: 'images/systems/khmeradv-artwork.png',
+    artworkAlt: 'KhmerADV multi-brand campaign network with production, approval and publishing',
+    steps: ['Brands', 'Production', 'Approval', 'Publish'],
   },
   {
     id: 'hermes-post',
@@ -36,12 +30,9 @@ const systems = [
     category: 'Small Business Content',
     name: 'Hermes Post',
     description: 'A simple idea-to-post assistant for shops, bloggers, creators and owner-led businesses.',
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M10 12h28v24H10z" /><path d="M16 19h16M16 25h10M16 31h7" strokeLinecap="round" />
-        <path d="M34 31l5 5" strokeLinecap="round" />
-      </svg>
-    ),
+    artwork: 'images/systems/hermes-post-artwork.png',
+    artworkAlt: 'Hermes Post transforming a business idea into a finished social post',
+    steps: ['Idea', 'Draft', 'Review', 'Post'],
   },
   {
     id: 'kramos',
@@ -49,60 +40,77 @@ const systems = [
     category: 'Compliance & Documents',
     name: 'KramOS',
     description: 'Evidence-first document compliance with deterministic checks and human approval for Cambodian operations.',
-    icon: (
-      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M14 6h20a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4z" />
-        <path d="M14 14h12M14 20h18M14 26h12" strokeLinecap="round" />
-      </svg>
-    ),
+    artwork: 'images/systems/kramos-artwork.png',
+    artworkAlt: 'KramOS evidence vault connecting documents, deterministic checks and human approval',
+    steps: ['Evidence', 'Checks', 'Approval', 'Record'],
   },
 ]
 
-function SystemCard({ system, index }) {
+function SystemRow({ system, index }) {
+  const moveArtwork = (event) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const rect = event.currentTarget.getBoundingClientRect()
+    const x = (event.clientX - rect.left) / rect.width - 0.5
+    const y = (event.clientY - rect.top) / rect.height - 0.5
+
+    event.currentTarget.style.setProperty('--artwork-shift-x', `${x * 9}px`)
+    event.currentTarget.style.setProperty('--artwork-shift-y', `${y * 6}px`)
+    event.currentTarget.style.setProperty('--artwork-rotate-x', `${y * -4.5}deg`)
+    event.currentTarget.style.setProperty('--artwork-rotate-y', `${x * 6}deg`)
+  }
+
+  const resetArtwork = (event) => {
+    event.currentTarget.style.removeProperty('--artwork-shift-x')
+    event.currentTarget.style.removeProperty('--artwork-shift-y')
+    event.currentTarget.style.removeProperty('--artwork-rotate-x')
+    event.currentTarget.style.removeProperty('--artwork-rotate-y')
+  }
+
   return (
     <motion.article
-      className="sticker-peel-card"
+      className="system-table-row"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.3 + index * 0.1 }}
-      whileHover={{ y: -7 }}
-      whileTap={{ y: -2, scale: 0.99 }}
+      whileHover={{ y: -4 }}
+      onPointerMove={moveArtwork}
+      onPointerLeave={resetArtwork}
     >
-      <div className="sticker-peel-card__sheet">
-        <div className="system-icon" style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          width: '64px', height: '64px', borderRadius: '12px',
-          background: 'var(--surface)', border: '1px solid var(--line)',
-          color: 'var(--signal-blue)',
-        }}>
-          {system.icon}
+      <div className="system-table-index" aria-hidden="true">
+        {system.number}
+      </div>
+
+      <figure className="system-table-artwork">
+        <img
+          src={`${import.meta.env.BASE_URL}${system.artwork}`}
+          alt={system.artworkAlt}
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+
+      <div className="system-table-content">
+        <div className="system-table-heading">
+          <span className="system-category label">{system.category}</span>
+          <h3 className="system-name">{system.name}</h3>
         </div>
 
-        <div className="system-meta" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-          <span className="system-category label" style={{
-            fontSize: 'var(--label-size)', fontWeight: 600,
-            color: 'var(--signal-blue)', letterSpacing: '0.05em',
-            textTransform: 'uppercase',
-          }}>
-            {system.category}
-          </span>
-          <h3 className="system-name" style={{
-            fontSize: '22px', fontWeight: 700, lineHeight: 1.2,
-            color: 'var(--ink)', margin: 0,
-          }}>
-            {system.name}
-          </h3>
-        </div>
+        <p className="system-description">{system.description}</p>
 
-        <p className="system-description" style={{
-          fontSize: 'var(--body-size)', lineHeight: 'var(--body-line)',
-          color: 'var(--muted)', margin: 0, flex: 1,
-        }}>
-          {system.description}
-        </p>
+        <ol className="system-flow" aria-label={`${system.name} workflow`}>
+          {system.steps.map((step) => (
+            <li key={step}>{step}</li>
+          ))}
+        </ol>
+      </div>
 
-        <a href={`${import.meta.env.BASE_URL}${system.id}/`} className="btn btn-secondary system-cta" style={{ alignSelf: 'flex-start', marginTop: 'auto' }}>
-          Explore {system.name} →
+      <div className="system-table-action">
+        <a href={`${import.meta.env.BASE_URL}${system.id}/`} className="btn btn-secondary system-cta">
+          Explore {system.name}
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </a>
       </div>
     </motion.article>
@@ -125,15 +133,12 @@ export function Section01() {
         overflow: 'hidden',
       }}
     >
-
-
       <div className="container" style={{
         position: 'relative',
         zIndex: 1,
         maxWidth: 'var(--max-width)',
         margin: '0 auto',
       }}>
-        {/* Section Header */}
         <motion.div
           className="section-header"
           initial={{ opacity: 0, y: 30 }}
@@ -146,11 +151,7 @@ export function Section01() {
             marginBottom: '80px',
           }}
         >
-          <MeshText
-            text="01"
-            className="section-number section-number--mesh"
-            force={36}
-          />
+          <MeshText text="01" className="section-number section-number--mesh" force={36} />
           <div className="section-divider" style={{
             width: '1px',
             height: '80px',
@@ -158,26 +159,23 @@ export function Section01() {
             marginTop: '8px',
             flexShrink: 0,
           }} />
-          <div>
-            <h2
-              id="systems-heading"
-              className="section-heading"
-              style={{
-                fontSize: 'var(--section-size-desktop)',
-                fontWeight: 700,
-                lineHeight: 1.02,
-                letterSpacing: '-0.05em',
-                color: 'var(--ink)',
-                margin: 0,
-                fontFamily: 'var(--font-latin)',
-              }}
-            >
-              <WeightHoverText label="Four systems. One accountable foundation." />
-            </h2>
-          </div>
+          <h2
+            id="systems-heading"
+            className="section-heading"
+            style={{
+              fontSize: 'var(--section-size-desktop)',
+              fontWeight: 700,
+              lineHeight: 1.02,
+              letterSpacing: '-0.05em',
+              color: 'var(--ink)',
+              margin: 0,
+              fontFamily: 'var(--font-latin)',
+            }}
+          >
+            <WeightHoverText label="Four systems. One accountable foundation." />
+          </h2>
         </motion.div>
 
-        {/* Journey Rail */}
         <motion.div
           className="journey-rail"
           initial={{ opacity: 0, y: 20 }}
@@ -187,12 +185,10 @@ export function Section01() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '0',
             marginBottom: '72px',
             position: 'relative',
           }}
         >
-          {/* Rail line */}
           <div style={{
             position: 'absolute',
             top: '50%',
@@ -238,41 +234,22 @@ export function Section01() {
               </span>
             </motion.div>
           ))}
-          {/* Directional end */}
-          <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            style={{
-              width: '24px',
-              height: '24px',
-              borderRadius: '50%',
-              border: '2px solid var(--signal-blue)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginLeft: '24px',
-            }}
-          >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="var(--signal-blue)" strokeWidth="2">
-              <path d="M3 6l3 3-3 3" />
-            </svg>
-          </motion.div>
         </motion.div>
 
-        {/* Systems Columns */}
         <motion.div
-          className="systems-grid"
+          className="systems-table"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
           transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 }}
-          style={{
-            display: 'grid',
-            gap: '32px',
-          }}
         >
+          <div className="systems-table-header" aria-hidden="true">
+            <span>No.</span>
+            <span>Visual workflow</span>
+            <span>System &amp; function</span>
+            <span>Access</span>
+          </div>
           {systems.map((system, i) => (
-            <SystemCard key={system.id} system={system} index={i} />
+            <SystemRow key={system.id} system={system} index={i} />
           ))}
         </motion.div>
       </div>

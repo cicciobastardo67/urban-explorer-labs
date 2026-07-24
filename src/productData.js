@@ -9,6 +9,15 @@ const luyagent = {
   problems: ['Customers wait for repeated product, stock and delivery answers.', 'Cart, address, payment evidence and order status become disconnected.', 'Sellers need automation without silently approving payments or difficult conversations.'],
   outcomes: [['Fewer missed orders', 'Customers can browse, ask questions and begin checkout without waiting for the seller.'], ['A controlled order flow', 'Product, stock, address, payment method and status stay connected from chat to confirmation.'], ['Seller control when it matters', 'Payments and difficult conversations are surfaced for human review.']],
   workflow: ['Telegram conversation', 'Catalog and FAQ', 'Cart and address', 'COD or bank QR', 'Payment evidence', 'Seller confirmation', 'Receipt and handoff'],
+  visuals: {
+    problem: 'images/products/luyagent/sales-problems.png',
+    outcomes: [
+      'images/products/luyagent/fewer-missed-orders.png',
+      'images/products/luyagent/controlled-order-flow.png',
+      'images/products/luyagent/seller-control.png',
+    ],
+    workflow: 'images/products/luyagent/order-workflow.png',
+  },
   capabilities: ['Khmer and English customer journeys', 'Catalog, search, cart and checkout', 'Stock-aware inventory controls', 'ABA, Wing and ACLEDA payment options', 'Payment screenshot review', 'Order confirmation and PDF receipts', 'Human handoff and assisted replies', 'Spreadsheet product import', 'Local seller dashboard and SQLite records'],
   proof: ['Telegram-ready', 'Seller-approved payments', 'Local operational data'],
   privacy: 'Catalog, orders and customer records are stored in the LUYAGENT installation. Assisted replies currently require configured model access.',

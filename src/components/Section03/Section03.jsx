@@ -11,6 +11,8 @@ const principles = [
     number: '01',
     title: 'Local-first',
     description: 'Data stays in-country. Systems run in your environment.',
+    artwork: 'images/principles/local-first-artwork.png',
+    artworkAlt: 'Local server infrastructure contained within Cambodia',
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M24 6C14.06 6 6 14.06 6 24s8.06 18 18 18 18-8.06 18-18S33.94 6 24 6z" />
@@ -24,6 +26,8 @@ const principles = [
     number: '02',
     title: 'Human-approved',
     description: 'Important actions require human review and clear accountability.',
+    artwork: 'images/principles/human-approved-artwork.png',
+    artworkAlt: 'Automated system waiting for a human approval decision',
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M14 10h20a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4z" />
@@ -39,6 +43,8 @@ const principles = [
     number: '03',
     title: 'Evidence-linked',
     description: 'Every output links to sources, documents, and audit trails.',
+    artwork: 'images/principles/evidence-linked-artwork.png',
+    artworkAlt: 'Evidence-linked output connected to source documents and audit trail',
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M14 6h20a4 4 0 0 1 4 4v24a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V10a4 4 0 0 1 4-4z" />
@@ -55,6 +61,8 @@ const principles = [
     number: '04',
     title: 'Khmer-ready',
     description: 'Built for Khmer language, local regulations, and cultural context.',
+    artwork: 'images/principles/khmer-ready-artwork.png',
+    artworkAlt: 'Khmer language workstation with Cambodian regulatory document',
     icon: (
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5">
         <rect x="6" y="10" width="36" height="28" rx="3" />
@@ -63,6 +71,26 @@ const principles = [
     ),
   },
 ]
+
+function movePrincipleArtwork(event) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+  const rect = event.currentTarget.getBoundingClientRect()
+  const x = (event.clientX - rect.left) / rect.width - 0.5
+  const y = (event.clientY - rect.top) / rect.height - 0.5
+
+  event.currentTarget.style.setProperty('--principle-shift-x', `${x * 8}px`)
+  event.currentTarget.style.setProperty('--principle-shift-y', `${y * 5}px`)
+  event.currentTarget.style.setProperty('--principle-rotate-x', `${y * -4}deg`)
+  event.currentTarget.style.setProperty('--principle-rotate-y', `${x * 5.5}deg`)
+}
+
+function resetPrincipleArtwork(event) {
+  event.currentTarget.style.removeProperty('--principle-shift-x')
+  event.currentTarget.style.removeProperty('--principle-shift-y')
+  event.currentTarget.style.removeProperty('--principle-rotate-x')
+  event.currentTarget.style.removeProperty('--principle-rotate-y')
+}
 
 export function Section03() {
   const [ref, isVisible] = useScrollReveal({ threshold: 0.15, rootMargin: '0px 0px -100px 0px' })
@@ -142,74 +170,53 @@ export function Section03() {
           {principles.map((principle, i) => (
             <motion.div
               key={principle.id}
+              className="principle-row"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 40 }}
               transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 + i * 0.12 }}
+              onPointerMove={movePrincipleArtwork}
+              onPointerLeave={resetPrincipleArtwork}
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'auto 1fr',
+                gridTemplateColumns: '64px minmax(230px, 0.75fr) minmax(320px, 1.25fr)',
                 gap: '32px',
-                alignItems: 'start',
+                alignItems: 'center',
                 padding: '32px',
                 borderRadius: '12px',
-                background: 'rgba(248, 252, 255, 0.5)',
+                background: 'var(--field-surface)',
                 border: '1px solid var(--line)',
+                backdropFilter: 'blur(10px)',
                 position: 'relative',
               }}
             >
-              {/* Number and icon */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '24px',
-                position: 'relative',
-                flexShrink: 0,
+              <span className="number-badge" style={{
+                alignSelf: 'start',
+                paddingTop: '12px',
+                fontSize: 'clamp(24px, 3vw, 36px)',
+                fontWeight: 700,
+                color: 'var(--signal-blue)',
+                lineHeight: 1,
+                fontFamily: 'var(--font-latin)',
               }}>
-                <span className="number-badge" style={{
-                  fontSize: 'clamp(28px, 3.5vw, 42px)',
-                  fontWeight: 700,
-                  color: 'var(--signal-blue)',
-                  lineHeight: 1,
-                  fontFamily: 'var(--font-latin)',
-                }}>
-                  {principle.number}
-                </span>
+                {principle.number}
+              </span>
 
-                {/* Ceramic object */}
-                <div style={{
-                  width: '120px',
-                  height: '120px',
-                  borderRadius: '16px',
-                  background: 'linear-gradient(145deg, #FFFFFF 0%, #F0F4F8 100%)',
-                  border: '1px solid rgba(28, 62, 91, 0.1)',
-                  boxShadow: '0 8px 32px rgba(28, 62, 91, 0.08), inset 0 1px 0 rgba(255,255,255,0.8)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--signal-blue)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}>
-                  {principle.icon}
-                  {/* Subtle signal glow */}
-                  <div style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'radial-gradient(circle at center, transparent 50%, rgba(40,85,232,0.05) 100%)',
-                    pointerEvents: 'none',
-                  }} />
-                </div>
-              </div>
+              <figure className="principle-artwork">
+                <img
+                  src={`${import.meta.env.BASE_URL}${principle.artwork}`}
+                  alt={principle.artworkAlt}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
 
               {/* Arrow between principles */}
               {i < principles.length - 1 && (
                 <motion.div
                   style={{
                     position: 'absolute',
-                    right: '24px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
+                    right: '20px',
+                    bottom: '18px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -226,7 +233,7 @@ export function Section03() {
               )}
 
               {/* Content */}
-              <div style={{ paddingTop: '8px' }}>
+              <div className="principle-content">
                 <h3 style={{
                   fontSize: 'clamp(24px, 2.8vw, 32px)',
                   fontWeight: 700,
