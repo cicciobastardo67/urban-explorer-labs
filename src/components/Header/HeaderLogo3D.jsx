@@ -5,6 +5,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { assetUrl } from '../../utils/assetUrl.js'
 
 const MODEL_URL = assetUrl('models/header-logo-house.glb')
+const UPRIGHT_LOGO_ROTATION = [-Math.PI / 2, 0, 0]
+const SCREEN_PLANE_CORRECTION = Math.PI
 
 function LogoModel() {
   const gltf = useLoader(GLTFLoader, MODEL_URL)
@@ -13,7 +15,9 @@ function LogoModel() {
 
     // The source model was authored lying on its back. Rotate it into a
     // straight front view before measuring so it can be fitted precisely.
-    object.rotation.set(-Math.PI / 2, 0, 0)
+    // First stand the source GLB up; the outer group below then applies the
+    // explicit 180-degree screen-plane correction requested for the header.
+    object.rotation.set(...UPRIGHT_LOGO_ROTATION)
     object.updateMatrixWorld(true)
 
     const bounds = new Box3().setFromObject(object)
@@ -43,7 +47,11 @@ function LogoModel() {
     return { object, scale: 2.15 / largest }
   }, [gltf])
 
-  return <primitive object={prepared.object} scale={prepared.scale} />
+  return (
+    <group rotation={[0, 0, SCREEN_PLANE_CORRECTION]}>
+      <primitive object={prepared.object} scale={prepared.scale} />
+    </group>
+  )
 }
 
 export function HeaderLogo3D() {

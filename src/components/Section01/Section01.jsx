@@ -2,8 +2,6 @@ import { motion } from 'framer-motion'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { MeshText } from '../MeshText'
 import { WeightHoverText } from '../WeightHoverText'
-import { PaperRoll } from '../PaperRoll/PaperRoll'
-import { usePaperRollState } from '../PaperRoll/usePaperRollState'
 
 const systems = [
   {
@@ -61,19 +59,15 @@ const systems = [
 ]
 
 function SystemCard({ system, index }) {
-  const peel = usePaperRollState()
-
   return (
     <motion.article
-      className={`sticker-peel-card${peel.active ? ' is-peeling' : ''}${peel.pressed ? ' is-pressed' : ''}`}
+      className="sticker-peel-card"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.3 + index * 0.1 }}
-      whileHover={{ y: -9, rotateX: 3, rotateY: -5 }}
-      whileTap={{ y: -3, rotateX: 5, rotateY: -8, scale: 0.985 }}
-      {...peel.handlers}
+      whileHover={{ y: -7 }}
+      whileTap={{ y: -2, scale: 0.99 }}
     >
-      <PaperRoll active={peel.active} pressed={peel.pressed} />
       <div className="sticker-peel-card__sheet">
         <div className="system-icon" style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',

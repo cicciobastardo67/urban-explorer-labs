@@ -4,7 +4,7 @@ import { useScroll } from 'framer-motion'
 import { useRef } from 'react'
 import { HeaderLogo3D } from './HeaderLogo3D'
 
-export function Header() {
+export function Header({ mapMode = 'day', onToggleMapMode }) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const { scrollY } = useScroll()
@@ -30,7 +30,11 @@ export function Header() {
       ref={headerRef}
       className="header"
       style={{
-        background: scrolled ? 'rgba(234, 245, 255, 0.92)' : 'transparent',
+        background: scrolled
+          ? mapMode === 'night'
+            ? 'rgba(5, 14, 29, 0.90)'
+            : 'rgba(234, 245, 255, 0.92)'
+          : 'transparent',
         backdropFilter: scrolled ? 'blur(12px)' : 'none',
         borderBottom: scrolled ? '1px solid var(--line)' : 'none',
         position: 'fixed',
@@ -67,7 +71,7 @@ export function Header() {
             letterSpacing: '0.05em',
             color: 'var(--ink)',
             fontFamily: 'var(--font-latin)',
-          }}>URBAN EXPLORER LABS</span>
+          }}>UE Labs</span>
         </a>
 
         {/* Desktop Navigation */}
@@ -98,6 +102,26 @@ export function Header() {
             </a>
           ))}
         </nav>
+
+        <button
+          type="button"
+          className="map-mode-toggle"
+          aria-label={`Switch to ${mapMode === 'day' ? 'night' : 'day'} map`}
+          aria-pressed={mapMode === 'night'}
+          onClick={onToggleMapMode}
+        >
+          {mapMode === 'day' ? (
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" />
+              <circle cx="12" cy="12" r="4" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19 15.5A8 8 0 0 1 8.5 5 8 8 0 1 0 19 15.5Z" />
+            </svg>
+          )}
+          <span>{mapMode === 'day' ? 'Night' : 'Day'}</span>
+        </button>
 
         {/* Desktop CTA */}
         <a

@@ -47,7 +47,10 @@ export function WeightHoverText({
               <motion.span
                 className="weight-hover-text__letter"
                 key={`${letter}-${currentIndex}`}
-                initial={false}
+                initial={{
+                  fontWeight: fromWeight,
+                  fontVariationSettings: `'wght' ${fromWeight}`,
+                }}
                 animate={{
                   fontWeight: isHovered && !reduceMotion ? toWeight : fromWeight,
                   fontVariationSettings: `'wght' ${isHovered && !reduceMotion ? toWeight : fromWeight}`,
