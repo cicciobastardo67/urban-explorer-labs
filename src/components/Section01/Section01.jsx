@@ -1,4 +1,6 @@
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { MeshText } from '../MeshText'
 import { WeightHoverText } from '../WeightHoverText'
@@ -45,6 +47,137 @@ const systems = [
     steps: ['Evidence', 'Checks', 'Approval', 'Record'],
   },
 ]
+
+function RailProductIcon({ system, index, isOpen, onOpen }) {
+  const rawX = useMotionValue(0)
+  const rawY = useMotionValue(0)
+  const x = useSpring(rawX, { stiffness: 180, damping: 18, mass: 0.45 })
+  const y = useSpring(rawY, { stiffness: 180, damping: 18, mass: 0.45 })
+  const rotateY = useTransform(x, [-8, 8], [-7, 7])
+  const rotateX = useTransform(y, [-6, 6], [6, -6])
+  const href = `${import.meta.env.BASE_URL}${system.id}/`
+
+  const followPointer = (event) => {
+    if (
+      event.pointerType === 'touch'
+      || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) return
+
+    const bounds = event.currentTarget.getBoundingClientRect()
+    const pointerX = (event.clientX - bounds.left) / bounds.width - 0.5
+    const pointerY = (event.clientY - bounds.top) / bounds.height - 0.5
+    rawX.set(pointerX * 16)
+    rawY.set(pointerY * 12)
+  }
+
+  const resetPointer = () => {
+    rawX.set(0)
+    rawY.set(0)
+  }
+
+  return (
+    <motion.div
+      className="journey-product"
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 + index * 0.1 }}
+    >
+      <motion.a
+        className="journey-product__link"
+        href={href}
+        aria-label={`Preview ${system.name}`}
+        aria-haspopup="dialog"
+        aria-expanded={isOpen}
+        aria-controls={isOpen ? 'system-quick-view' : undefined}
+        style={{ x, y, rotateX, rotateY }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.96 }}
+        onPointerMove={followPointer}
+        onPointerLeave={resetPointer}
+        onClick={(event) => {
+          event.preventDefault()
+          onOpen(system)
+        }}
+      >
+        <span className="journey-product__icon" aria-hidden="true">
+          <img src={`${import.meta.env.BASE_URL}${system.artwork}`} alt="" />
+        </span>
+      </motion.a>
+      <span className="label label-small journey-product__label">{system.name}</span>
+    </motion.div>
+  )
+}
+
+function SystemQuickView({ system, onClose }) {
+  useEffect(() => {
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') onClose()
+    }
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', closeOnEscape)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [onClose])
+
+  const href = `${import.meta.env.BASE_URL}${system.id}/`
+
+  return createPortal(
+    <motion.div
+      className="system-quick-view__backdrop"
+      role="presentation"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.22 }}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose()
+      }}
+    >
+      <motion.section
+        id="system-quick-view"
+        className="system-quick-view"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="system-quick-view-title"
+        initial={{ opacity: 0, y: 26, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 18, scale: 0.97 }}
+        transition={{ type: 'spring', stiffness: 180, damping: 22 }}
+      >
+        <button className="system-quick-view__close" type="button" onClick={onClose} autoFocus aria-label="Close preview">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+
+        <figure className="system-quick-view__artwork">
+          <img src={`${import.meta.env.BASE_URL}${system.artwork}`} alt={system.artworkAlt} />
+        </figure>
+
+        <div className="system-quick-view__content">
+          <span className="system-category">{system.category}</span>
+          <h3 id="system-quick-view-title">{system.name}</h3>
+          <p>{system.description}</p>
+          <ol aria-label={`${system.name} workflow`}>
+            {system.steps.map((step) => <li key={step}>{step}</li>)}
+          </ol>
+          <a className="btn btn-primary" href={href}>
+            Explore {system.name}
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
+        </div>
+      </motion.section>
+    </motion.div>,
+    document.body,
+  )
+}
 
 function SystemRow({ system, index }) {
   const moveArtwork = (event) => {
@@ -119,26 +252,28 @@ function SystemRow({ system, index }) {
 
 export function Section01() {
   const [ref, isVisible] = useScrollReveal({ threshold: 0.15, rootMargin: '0px 0px -100px 0px' })
+  const [selectedSystem, setSelectedSystem] = useState(null)
 
   return (
-    <section
-      ref={ref}
-      id="systems"
-      className="section section-systems"
-      aria-labelledby="systems-heading"
-      style={{
-        position: 'relative',
-        padding: 'var(--section-gap) var(--gutter-desktop)',
-        background: 'var(--canvas)',
-        overflow: 'hidden',
-      }}
-    >
-      <div className="container" style={{
-        position: 'relative',
-        zIndex: 1,
-        maxWidth: 'var(--max-width)',
-        margin: '0 auto',
-      }}>
+    <>
+      <section
+        ref={ref}
+        id="systems"
+        className="section section-systems"
+        aria-labelledby="systems-heading"
+        style={{
+          position: 'relative',
+          padding: 'var(--section-gap) var(--gutter-desktop)',
+          background: 'var(--canvas)',
+          overflow: 'hidden',
+        }}
+      >
+        <div className="container" style={{
+          position: 'relative',
+          zIndex: 1,
+          maxWidth: 'var(--max-width)',
+          margin: '0 auto',
+        }}>
         <motion.div
           className="section-header"
           initial={{ opacity: 0, y: 30 }}
@@ -200,39 +335,13 @@ export function Section01() {
             zIndex: 0,
           }} />
           {systems.map((system, i) => (
-            <motion.div
+            <RailProductIcon
               key={system.id}
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 + i * 0.1 }}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '12px',
-                zIndex: 1,
-                position: 'relative',
-                flex: 1,
-              }}
-            >
-              <div className="rail-node" style={{
-                width: '14px',
-                height: '14px',
-                borderRadius: '50%',
-                background: i === 0 ? 'var(--signal-blue)' : 'var(--canvas)',
-                border: '2px solid var(--signal-blue)',
-                boxShadow: '0 0 0 4px var(--canvas)',
-              }} />
-              <span className="label label-small" style={{
-                fontSize: 'var(--label-size)',
-                fontWeight: 500,
-                color: 'var(--ink)',
-                textAlign: 'center',
-                whiteSpace: 'nowrap',
-              }}>
-                {system.name}
-              </span>
-            </motion.div>
+              system={system}
+              index={i}
+              isOpen={selectedSystem?.id === system.id}
+              onOpen={setSelectedSystem}
+            />
           ))}
         </motion.div>
 
@@ -251,8 +360,15 @@ export function Section01() {
           {systems.map((system, i) => (
             <SystemRow key={system.id} system={system} index={i} />
           ))}
-        </motion.div>
-      </div>
-    </section>
+          </motion.div>
+        </div>
+      </section>
+
+      <AnimatePresence>
+        {selectedSystem && (
+          <SystemQuickView system={selectedSystem} onClose={() => setSelectedSystem(null)} />
+        )}
+      </AnimatePresence>
+    </>
   )
 }

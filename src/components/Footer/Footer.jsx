@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
+import { HeaderLogo3D } from '../Header/HeaderLogo3D'
 
 export function Footer() {
   const [ref, isVisible] = useScrollReveal({ threshold: 0.1, rootMargin: '0px' })
@@ -36,20 +37,15 @@ export function Footer() {
           {/* Brand Column */}
           <div className="footer-brand" style={{ maxWidth: '320px' }}>
             <a href={import.meta.env.BASE_URL} className="footer-brand-link" aria-label="Urban Explorer Labs home" style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-              <svg viewBox="0 0 48 48" width="40" height="40" fill="none" style={{ flexShrink: 0 }}>
-                <rect x="8" y="20" width="32" height="20" rx="2" fill="var(--ink)" />
-                <path d="M24 8 L16 20 L16 40 L32 40 L32 20 Z" fill="var(--ink)" />
-                <rect x="20" y="24" width="8" height="16" rx="1" fill="var(--canvas)" />
-                <circle cx="24" cy="16" r="2" fill="var(--route-coral)" />
-              </svg>
+              <HeaderLogo3D />
               <span style={{
-                fontSize: '15px',
+                fontSize: 'var(--nav-size)',
                 fontWeight: 600,
                 letterSpacing: '0.05em',
                 color: 'var(--ink)',
                 fontFamily: 'var(--font-latin)',
               }}>
-                URBAN EXPLORER LABS
+                UE Labs
               </span>
             </a>
             <p style={{

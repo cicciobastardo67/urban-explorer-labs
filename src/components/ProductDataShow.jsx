@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { assetUrl } from '../utils/assetUrl'
+import { moveArtwork, resetArtwork } from '../utils/artworkMotion'
 
 const views = [
   { id: 'kramos', label: 'Evidence review' },
@@ -61,12 +63,23 @@ function LuyagentView() {
 
 const renderers = { kramos: KramOSView, khmeradv: KhmerADVView, hermes: HermesView, luyagent: LuyagentView }
 
-export function ProductDataShow({ initialView = 'kramos' }) {
+export function ProductDataShow({ initialView = 'kramos', artwork = '', artworkAlt = '' }) {
   const [active, setActive] = useState(initialView)
   const ActiveView = renderers[active] || KramOSView
 
   return <section id="data-show" className="product-data-show" aria-labelledby="data-show-heading"><div className="container">
-    <div className="data-show-heading"><div><p className="product-kicker">Real workflow surfaces</p><h2 id="data-show-heading">See the work clearly.</h2></div><p>Representative interface data based on implemented product workflows - not customer performance claims.</p></div>
+    <div className="data-show-intro">
+      <div className="data-show-heading">
+        <p className="product-kicker">Real workflow surfaces</p>
+        <h2 id="data-show-heading">See the work clearly.</h2>
+        <p>Representative interface data based on implemented product workflows - not customer performance claims.</p>
+      </div>
+      {artwork && (
+        <figure className="data-show-artwork product-artwork" onPointerMove={moveArtwork} onPointerLeave={resetArtwork}>
+          <img src={assetUrl(artwork)} alt={artworkAlt} loading="lazy" />
+        </figure>
+      )}
+    </div>
     <div className="data-tabs" role="tablist" aria-label="Product data views">{views.map((view) => <button type="button" role="tab" aria-selected={active === view.id} className={active === view.id ? 'is-active' : ''} onClick={() => setActive(view.id)} key={view.id}>{view.label}</button>)}</div>
     <div className="data-frame"><ActiveView /></div>
     <div className="data-human-note"><span aria-hidden="true">H</span><div><strong>Human approval remains visible.</strong><p>Automation highlights work and moves information forward. People validate sensitive decisions before approval or publication.</p></div></div>

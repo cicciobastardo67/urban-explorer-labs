@@ -1,10 +1,12 @@
 import { assetUrl } from '../utils/assetUrl.js'
+import { moveArtwork, resetArtwork } from '../utils/artworkMotion.js'
 
 const VIDEO_URL = assetUrl('media/urban-explorer-workflow-overview.mp4')
 const WORKFLOW_IMAGE_URL = assetUrl('media/urban-explorer-visual-workflow.webp')
 
-export function VisualOverview({ compact = false, productName = '' }) {
+export function VisualOverview({ compact = false, productName = '', image = '' }) {
   if (compact) {
+    const compactImageUrl = image ? assetUrl(image) : WORKFLOW_IMAGE_URL
     return (
       <section className="product-section product-visual-overview" aria-labelledby="product-visual-overview-heading">
         <div className="container product-visual-overview__grid">
@@ -16,12 +18,12 @@ export function VisualOverview({ compact = false, productName = '' }) {
             <p className="product-visual-overview__copy">
               Verified source material enters a product-specific path, passes a final quality check, and leaves through standard export settings.
             </p>
-            <a className="btn btn-secondary" href={WORKFLOW_IMAGE_URL} target="_blank" rel="noreferrer">
+            <a className="btn btn-secondary" href={compactImageUrl} target="_blank" rel="noreferrer">
               Open the full workflow
             </a>
           </div>
-          <a className="product-visual-overview__image" href={WORKFLOW_IMAGE_URL} target="_blank" rel="noreferrer" aria-label="Open the full Urban Explorer Labs visual workflow">
-            <img src={WORKFLOW_IMAGE_URL} alt="Urban Explorer Labs visual workflow showing verified inputs, security exclusions, four product-specific visual pipelines, quality checks, and standard exports" loading="lazy" />
+          <a className="product-visual-overview__image product-artwork" href={compactImageUrl} target="_blank" rel="noreferrer" aria-label="Open the full Urban Explorer Labs visual workflow" onPointerMove={moveArtwork} onPointerLeave={resetArtwork}>
+            <img src={compactImageUrl} alt="Urban Explorer Labs visual workflow showing verified inputs, security exclusions, four product-specific visual pipelines, quality checks, and standard exports" loading="lazy" />
           </a>
         </div>
       </section>

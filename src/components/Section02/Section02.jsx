@@ -1,10 +1,130 @@
-import { motion } from 'framer-motion'
+import { memo, useState } from 'react'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { MeshText } from '../MeshText'
 import { WeightHoverText } from '../WeightHoverText'
 import { VisualOverview } from '../VisualOverview'
 
 const NOTEBOOK_ARTIFACT_URL = 'https://notebooklm.google.com/notebook/9baeee1e-40d1-4452-86e4-4632f448c536/artifact/713d7434-4bf9-493f-a303-23415ded44ae?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_'
+
+function IntegrationGlyph({ type }) {
+  if (type === 'erp') {
+    return <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 38V21h8v17M20 38V12h8v26M31 38V6h8v32M6 38h36" /></svg>
+  }
+
+  if (type === 'crm') {
+    return <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="18" cy="17" r="6" /><path d="M7 37c1-8 5-12 11-12s10 4 11 12M31 14h10v13h-6l-5 5v-5h-3" /></svg>
+  }
+
+  if (type === 'dms') {
+    return <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 13h13l4 5h15v22H8zM15 25h18M15 31h14" /></svg>
+  }
+
+  return <svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="10" rx="15" ry="6" /><path d="M9 10v10c0 3 7 6 15 6s15-3 15-6V10M9 20v10c0 3 7 6 15 6s15-3 15-6V20M9 30v8c0 3 7 6 15 6s15-3 15-6v-8" /></svg>
+}
+
+const FlowConnector = memo(function FlowConnector({ direction, delay }) {
+  return (
+    <div className={`ecosystem-connector ecosystem-connector--${direction}`} aria-hidden="true">
+      <span className="ecosystem-connector__line" />
+      <span className="ecosystem-connector__track" style={{ '--flow-delay': `${delay}s` }}>
+        <i />
+      </span>
+    </div>
+  )
+})
+
+const integrationNodes = [
+  { id: 'erp', label: 'ERP', detail: 'SAP / Odoo', type: 'erp', position: 'erp' },
+  { id: 'crm', label: 'CRM', detail: 'HubSpot / Custom', type: 'crm', position: 'crm' },
+  { id: 'dms', label: 'Documents', detail: 'SharePoint / DMS', type: 'dms', position: 'dms' },
+  { id: 'data', label: 'Data', detail: 'PostgreSQL / ClickHouse', type: 'data', position: 'data' },
+]
+
+function EcosystemInfographic() {
+  const [isPaused, setIsPaused] = useState(false)
+  const rawX = useMotionValue(0)
+  const rawY = useMotionValue(0)
+  const x = useSpring(rawX, { stiffness: 105, damping: 18, mass: 0.6 })
+  const y = useSpring(rawY, { stiffness: 105, damping: 18, mass: 0.6 })
+  const rotateY = useTransform(x, [-7, 7], [-2.2, 2.2])
+  const rotateX = useTransform(y, [-5, 5], [1.8, -1.8])
+
+  const followPointer = (event) => {
+    if (
+      event.pointerType === 'touch'
+      || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) return
+
+    const bounds = event.currentTarget.getBoundingClientRect()
+    rawX.set((((event.clientX - bounds.left) / bounds.width) - 0.5) * 14)
+    rawY.set((((event.clientY - bounds.top) / bounds.height) - 0.5) * 10)
+  }
+
+  const resetPointer = () => {
+    rawX.set(0)
+    rawY.set(0)
+  }
+
+  return (
+    <motion.div
+      className={`ecosystem-infographic${isPaused ? ' is-paused' : ''}`}
+      style={{ x, y, rotateX, rotateY }}
+      onPointerMove={followPointer}
+      onPointerLeave={resetPointer}
+    >
+      <div className="ecosystem-infographic__topline">
+        <span>Controlled integration layer</span>
+        <button type="button" aria-pressed={isPaused} onClick={() => setIsPaused((current) => !current)}>
+          {isPaused ? (
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7z" /></svg>
+          ) : (
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6v12M16 6v12" /></svg>
+          )}
+          {isPaused ? 'Play flow' : 'Pause flow'}
+        </button>
+      </div>
+
+      <div className="ecosystem-infographic__map">
+        {integrationNodes.map((node) => (
+          <motion.article
+            className={`ecosystem-node ecosystem-node--${node.position}`}
+            key={node.id}
+            whileHover={{ y: -4, scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <span className="ecosystem-node__glyph"><IntegrationGlyph type={node.type} /></span>
+            <span><strong>{node.label}</strong><small>{node.detail}</small></span>
+          </motion.article>
+        ))}
+
+        <FlowConnector direction="inbound" delay={0} />
+        <FlowConnector direction="inbound-bottom" delay={1.1} />
+        <FlowConnector direction="outbound" delay={2.2} />
+        <FlowConnector direction="outbound-bottom" delay={3.3} />
+
+        <div className="ecosystem-core">
+          <span className="ecosystem-core__orbit" aria-hidden="true" />
+          <span className="ecosystem-core__mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64"><path d="M32 6 52 14v15c0 13-8 23-20 29C20 52 12 42 12 29V14z" /><path d="M23 31h18M27 24h10M27 38h10" /></svg>
+          </span>
+          <strong>UE Core</strong>
+          <small>Private · Local · Controlled</small>
+          <ul>
+            <li>Policy</li>
+            <li>Logic</li>
+            <li>Audit</li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="ecosystem-infographic__status" aria-live="polite">
+        <span><i /> Local connection</span>
+        <span><i /> Human-controlled access</span>
+      </div>
+    </motion.div>
+  )
+}
 
 const proofs = [
   {
@@ -13,7 +133,7 @@ const proofs = [
     description: 'Tools your teams use every day. Clean, focused, and tailored to your workflows.',
     visual: (
       <div style={{
-        background: 'var(--surface)',
+        background: 'var(--field-surface)',
         border: '1px solid var(--line)',
         borderRadius: '12px',
         overflow: 'hidden',
@@ -23,7 +143,7 @@ const proofs = [
       }}>
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(180deg, var(--surface) 0%, var(--mist-deep) 100%)',
+          background: 'linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--surface) 35%, transparent) 100%)',
         }} />
         <div style={{ padding: '24px', position: 'relative', zIndex: 1, height: '100%', display: 'flex', flexDirection: 'column' }}>
           <div style={{
@@ -87,14 +207,14 @@ Items:
     description: 'Deployed in your environment. Your data stays local. Your policies stay in place.',
     visual: (
       <div style={{
-        background: 'var(--ink)',
+        background: 'var(--field-surface)',
         border: '1px solid var(--line)',
         borderRadius: '12px',
         overflow: 'hidden',
         height: '100%',
         minHeight: '320px',
         position: 'relative',
-        color: 'var(--white)',
+        color: 'var(--ink)',
       }}>
         <div style={{ padding: '24px', position: 'relative', zIndex: 1, height: '100%', display: 'flex', flexDirection: 'column' }}>
           <div style={{
@@ -128,10 +248,10 @@ Items:
               <div style={{ fontSize: '11px', color: 'var(--signal-blue)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Data Locality</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>Primary</span><span style={{ color: 'var(--white)' }}>Phnom Penh DC</span>
+                  <span>Primary</span><span style={{ color: 'var(--ink)' }}>Phnom Penh DC</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>Backup</span><span style={{ color: 'var(--white)' }}>Siem Reap DC</span>
+                  <span>Backup</span><span style={{ color: 'var(--ink)' }}>Siem Reap DC</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span>Cloud Sync</span><span style={{ color: 'var(--route-coral)' }}>Disabled (Policy)</span>
@@ -145,10 +265,10 @@ Items:
               <div style={{ fontSize: '11px', color: 'var(--signal-blue)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Network</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>Ingress</span><span style={{ color: 'var(--white)' }}>42 Mbps</span>
+                  <span>Ingress</span><span style={{ color: 'var(--ink)' }}>42 Mbps</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <span>Egress</span><span style={{ color: 'var(--white)' }}>18 Mbps</span>
+                  <span>Egress</span><span style={{ color: 'var(--ink)' }}>18 Mbps</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span>Latency (local)</span><span style={{ color: '#4ade80' }}>{'< 2ms'}</span>
@@ -273,6 +393,12 @@ Items:
   },
 ]
 
+const displayedProofs = proofs.map((proof) => (
+  proof.id === 'proof-3'
+    ? { ...proof, visual: <EcosystemInfographic /> }
+    : proof
+))
+
 export function Section02() {
   const [ref, isVisible] = useScrollReveal({ threshold: 0.15, rootMargin: '0px 0px -100px 0px' })
 
@@ -343,7 +469,7 @@ export function Section02() {
 
         {/* Proof Bands */}
         <div className="proof-bands" style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
-          {proofs.map((proof, i) => (
+          {displayedProofs.map((proof, i) => (
             <motion.div
               key={proof.id}
               initial={{ opacity: 0, y: 40 }}

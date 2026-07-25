@@ -4,19 +4,7 @@ import { Footer } from './Footer'
 import { ProductDataShow } from './ProductDataShow'
 import { VisualOverview } from './VisualOverview'
 import { assetUrl } from '../utils/assetUrl'
-
-function moveArtwork(event) {
-  const bounds = event.currentTarget.getBoundingClientRect()
-  const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2
-  const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2
-  event.currentTarget.style.setProperty('--artwork-x', x.toFixed(3))
-  event.currentTarget.style.setProperty('--artwork-y', y.toFixed(3))
-}
-
-function resetArtwork(event) {
-  event.currentTarget.style.setProperty('--artwork-x', 0)
-  event.currentTarget.style.setProperty('--artwork-y', 0)
-}
+import { moveArtwork, resetArtwork } from '../utils/artworkMotion'
 
 export function ProductPage({ product }) {
   const [mapMode, setMapMode] = useState(() => (
@@ -67,7 +55,7 @@ export function ProductPage({ product }) {
             </div>
             {product.visuals?.problem && (
               <figure className="product-artwork product-problem-artwork" onPointerMove={moveArtwork} onPointerLeave={resetArtwork}>
-                <img src={assetUrl(product.visuals.problem)} alt={`${product.name} routes difficult orders to human review`} />
+              <img src={assetUrl(product.visuals.problem)} alt={`${product.name} routes difficult orders to human review`} loading="lazy" />
               </figure>
             )}
           </div>
@@ -77,27 +65,41 @@ export function ProductPage({ product }) {
           {product.outcomes.map(([title, copy], index) => <article key={title}>
             {product.visuals?.outcomes?.[index] && (
               <figure className="product-artwork product-outcome-artwork" onPointerMove={moveArtwork} onPointerLeave={resetArtwork}>
-                <img src={assetUrl(product.visuals.outcomes[index])} alt="" />
+                <img src={assetUrl(product.visuals.outcomes[index])} alt="" loading="lazy" />
               </figure>
             )}
             <span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p>
           </article>)}
         </div></div></section>
 
-        <section id="workflow" className="product-section product-workflow"><div className="container"><p className="product-kicker">How the workflow moves</p><h2>One controlled path from input to approved action.</h2>
-          {product.visuals?.workflow && (
-            <figure className="product-artwork product-workflow-artwork" onPointerMove={moveArtwork} onPointerLeave={resetArtwork}>
-              <img src={assetUrl(product.visuals.workflow)} alt={`${product.name} order workflow from Telegram conversation to receipt and handoff`} />
-            </figure>
-          )}
+        <section id="workflow" className="product-section product-workflow"><div className="container">
+          <div className="product-workflow-intro">
+            <div>
+              <p className="product-kicker">How the workflow moves</p>
+              <h2>One controlled path from input to approved action.</h2>
+            </div>
+            {product.visuals?.workflow && (
+              <figure className="product-artwork product-workflow-artwork" onPointerMove={moveArtwork} onPointerLeave={resetArtwork}>
+                <img src={assetUrl(product.visuals.workflow)} alt={`${product.name} controlled workflow`} loading="lazy" />
+              </figure>
+            )}
+          </div>
           <ol>
             {product.workflow.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, '0')}</span>{step}</li>)}
           </ol>
         </div></section>
 
-        <ProductDataShow initialView={product.dataView} />
+        <ProductDataShow
+          initialView={product.dataView}
+          artwork={product.visuals?.showcase}
+          artworkAlt={`${product.name} operational control surface`}
+        />
 
-        <VisualOverview compact productName={product.name} />
+        <VisualOverview
+          compact
+          productName={product.name}
+          image={product.visuals?.portfolio}
+        />
 
         <section className="product-section"><div className="container product-two-column"><div><p className="product-kicker">Capabilities</p><h2>Built around the work—not a generic dashboard.</h2></div><ul className="product-capabilities">{product.capabilities.map((item) => <li key={item}>{item}</li>)}</ul></div></section>
 
