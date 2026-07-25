@@ -134,9 +134,9 @@ input, textarea, select {
   padding: 0 var(--gutter-desktop);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .container {
-    padding: 0 var(--gutter-mobile);
+    padding: 0 clamp(24px, 4vw, 40px);
   }
 
   .nav-desktop,
@@ -149,6 +149,15 @@ input, textarea, select {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--gutter-mobile);
   }
 
   .header .brand span {

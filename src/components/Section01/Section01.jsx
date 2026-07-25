@@ -181,7 +181,11 @@ function SystemQuickView({ system, onClose }) {
 
 function SystemRow({ system, index }) {
   const moveArtwork = (event) => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (
+      event.pointerType === 'touch'
+      || window.matchMedia('(pointer: coarse)').matches
+      || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) return
 
     const rect = event.currentTarget.getBoundingClientRect()
     const x = (event.clientX - rect.left) / rect.width - 0.5

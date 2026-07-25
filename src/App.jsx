@@ -26,12 +26,22 @@ function HomePage() {
 
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll('.site-content > section'))
+    const coarsePointer = window.matchMedia('(pointer: coarse)')
     let frame = 0
 
     const updateParallax = () => {
       frame = 0
+      if (coarsePointer.matches || reduceMotion) {
+        document.querySelector('.app')?.style.setProperty('--map-scroll', '0%')
+        sections.forEach((section) => {
+          section.style.setProperty('--layer-parallax-x', '0px')
+          section.style.setProperty('--layer-parallax-y', '0px')
+        })
+        return
+      }
+
       const scrollRange = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1)
-      const progress = reduceMotion ? 0 : Math.min(Math.max(window.scrollY / scrollRange, 0), 1)
+      const progress = Math.min(Math.max(window.scrollY / scrollRange, 0), 1)
       const cameraX = Math.sin(progress * Math.PI * 2) * 28
       const cameraY = Math.cos(progress * Math.PI * 3) * 10
       document.querySelector('.app')?.style.setProperty('--map-scroll', `${progress * 100}%`)
@@ -55,10 +65,12 @@ function HomePage() {
     updateParallax()
     window.addEventListener('scroll', requestUpdate, { passive: true })
     window.addEventListener('resize', requestUpdate)
+    coarsePointer.addEventListener?.('change', requestUpdate)
 
     return () => {
       window.removeEventListener('scroll', requestUpdate)
       window.removeEventListener('resize', requestUpdate)
+      coarsePointer.removeEventListener?.('change', requestUpdate)
       if (frame) window.cancelAnimationFrame(frame)
     }
   }, [reduceMotion])

@@ -10,7 +10,7 @@ export function Hero({ mapMode = 'day' }) {
   const [revealRef] = useScrollReveal({ threshold: 0, rootMargin: '0px 0px -50px 0px' })
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    const checkMobile = () => setIsMobile(window.innerWidth < 980)
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => {
@@ -25,7 +25,7 @@ export function Hero({ mapMode = 'day' }) {
       className="hero"
       style={{
         position: 'relative',
-        minHeight: '100vh',
+        minHeight: '100dvh',
         display: 'flex',
         alignItems: 'center',
         background: 'transparent',

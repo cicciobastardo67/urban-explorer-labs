@@ -1,4 +1,10 @@
 export function moveArtwork(event) {
+  if (
+    event.pointerType === 'touch'
+    || window.matchMedia('(pointer: coarse)').matches
+    || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) return
+
   const bounds = event.currentTarget.getBoundingClientRect()
   const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2
   const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2
