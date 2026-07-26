@@ -2,12 +2,36 @@ import { useState } from 'react'
 import { assetUrl } from '../utils/assetUrl'
 import { moveArtwork, resetArtwork } from '../utils/artworkMotion'
 
-const views = [
-  { id: 'kramos', label: 'Evidence review' },
-  { id: 'khmeradv', label: 'Campaign production' },
-  { id: 'hermes', label: 'Post assistant' },
-  { id: 'luyagent', label: 'Seller operations' },
-]
+const viewContent = {
+  kramos: {
+    kicker: 'Evidence review console',
+    title: 'Decide with the source still attached.',
+    description: 'A representative KramOS review surface: document queue, source page, applied rule, department ownership and human decision history.',
+    label: 'KramOS document control',
+    note: 'KramOS extracts and links evidence. A named reviewer approves, requests evidence or records an override.',
+  },
+  khmeradv: {
+    kicker: 'Campaign command centre',
+    title: 'Run every brand without mixing the work.',
+    description: 'A representative KhmerADV workspace: campaign selection, production stages, approval status and channel delivery in one branded operation.',
+    label: 'KhmerADV campaign production',
+    note: 'KhmerADV coordinates production. A campaign owner approves the brand composition and enables each publishing channel.',
+  },
+  hermes: {
+    kicker: 'Content planning assistant',
+    title: 'Turn one idea into an approved content week.',
+    description: 'A representative Hermes Post surface: weekly plan, current draft, image status, mobile approval and scheduled handoff.',
+    label: 'Hermes Post weekly planner',
+    note: 'Hermes Post prepares and schedules content. The business owner keeps the final voice and approves every post.',
+  },
+  luyagent: {
+    kicker: 'Seller operations console',
+    title: 'Keep every chat connected to the order.',
+    description: 'A representative LUYAGENT surface: attention queue, cart-to-receipt pipeline and explicit seller controls for payments, questions and stock.',
+    label: 'LUYAGENT order operations',
+    note: 'LUYAGENT moves the order forward. The seller verifies payment evidence and takes over difficult conversations.',
+  },
+}
 
 const statusClass = (status) => `data-status data-status--${status.toLowerCase().replaceAll(' ', '-')}`
 
@@ -16,6 +40,7 @@ function Status({ children }) {
 }
 
 function KramOSView() {
+  const [decision, setDecision] = useState('In review')
   const documents = [
     ['Supplier invoice - April', 'Invoice / p. 2', 'Verified', 'Finance'],
     ['Company licence renewal', 'Licence / p. 1', 'In review', 'Corporate'],
@@ -30,7 +55,7 @@ function KramOSView() {
     <div className="data-stack">
       <section className="data-pane"><div className="data-pane__heading"><h3>Evidence readiness</h3><span>Representative workflow</span></div><div className="data-progress"><i /></div><div className="data-scale"><span>Intake</span><span>Review</span><span>Approval</span></div></section>
       <section className="data-pane"><h3>Department checks</h3><ol className="data-track">{['Tax', 'Audit', 'Customs', 'Logistics', 'Garment', 'ISO', 'Safety'].map((item, index) => <li className={index < 4 ? 'is-complete' : index < 6 ? 'is-review' : ''} key={item}><i>{index + 1}</i><span>{item}</span></li>)}</ol></section>
-      <section className="data-pane"><h3>Source lineage</h3><div className="data-lineage"><span>Company licence renewal</span><b>Licence / page 1</b><span>Expiry rule</span><b>Human decision required</b></div></section>
+      <section className="data-pane"><h3>Source lineage</h3><div className="data-lineage"><span>Company licence renewal</span><b>Licence / page 1</b><span>Expiry rule</span><b>Human decision required</b><span>Reviewer action</span><b>{decision}</b></div><div className="data-decision-actions"><button type="button" onClick={() => setDecision('Approved')}>Approve</button><button type="button" onClick={() => setDecision('Evidence requested')}>Request evidence</button><button type="button" onClick={() => setDecision('Override recorded')}>Override</button></div></section>
     </div>
   </div>
 }
@@ -63,16 +88,16 @@ function LuyagentView() {
 
 const renderers = { kramos: KramOSView, khmeradv: KhmerADVView, hermes: HermesView, luyagent: LuyagentView }
 
-export function ProductDataShow({ initialView = 'kramos', artwork = '', artworkAlt = '' }) {
-  const [active, setActive] = useState(initialView)
-  const ActiveView = renderers[active] || KramOSView
+export function ProductDataShow({ initialView = 'kramos', productName = '', artwork = '', artworkAlt = '' }) {
+  const ActiveView = renderers[initialView] || KramOSView
+  const content = viewContent[initialView] || viewContent.kramos
 
   return <section id="data-show" className="product-data-show" aria-labelledby="data-show-heading"><div className="container">
     <div className="data-show-intro">
       <div className="data-show-heading">
-        <p className="product-kicker">Real workflow surfaces</p>
-        <h2 id="data-show-heading">See the work clearly.</h2>
-        <p>Representative interface data based on implemented product workflows - not customer performance claims.</p>
+        <p className="product-kicker">{content.kicker}</p>
+        <h2 id="data-show-heading">{content.title}</h2>
+        <p>{content.description}</p>
       </div>
       {artwork && (
         <figure className="data-show-artwork product-artwork" onPointerMove={moveArtwork} onPointerLeave={resetArtwork}>
@@ -80,8 +105,8 @@ export function ProductDataShow({ initialView = 'kramos', artwork = '', artworkA
         </figure>
       )}
     </div>
-    <div className="data-tabs" role="tablist" aria-label="Product data views">{views.map((view) => <button type="button" role="tab" aria-selected={active === view.id} className={active === view.id ? 'is-active' : ''} onClick={() => setActive(view.id)} key={view.id}>{view.label}</button>)}</div>
+    <div className="data-product-bar"><span>{productName}</span><strong>{content.label}</strong><span>Representative local workflow</span></div>
     <div className="data-frame"><ActiveView /></div>
-    <div className="data-human-note"><span aria-hidden="true">H</span><div><strong>Human approval remains visible.</strong><p>Automation highlights work and moves information forward. People validate sensitive decisions before approval or publication.</p></div></div>
+    <div className="data-human-note"><span aria-hidden="true">H</span><div><strong>Human approval remains visible.</strong><p>{content.note}</p></div></div>
   </div></section>
 }

@@ -112,8 +112,8 @@ export function SpotlightText({
             inset: 0,
             color: brightColor,
             pointerEvents: 'none',
-            WebkitMaskImage: maskImage,
-            maskImage,
+            WebkitMaskImage: interactive ? maskImage : 'none',
+            maskImage: interactive ? maskImage : 'none',
             WebkitMaskRepeat: 'no-repeat',
             maskRepeat: 'no-repeat',
           }}

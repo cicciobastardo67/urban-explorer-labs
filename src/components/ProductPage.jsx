@@ -3,10 +3,13 @@ import { Header } from './Header'
 import { Footer } from './Footer'
 import { ProductDataShow } from './ProductDataShow'
 import { VisualOverview } from './VisualOverview'
+import { SpotlightText } from './SpotlightText'
 import { assetUrl } from '../utils/assetUrl'
 import { moveArtwork, resetArtwork } from '../utils/artworkMotion'
+import { useMapScroll } from '../hooks/useMapScroll'
 
 export function ProductPage({ product }) {
+  const reduceMotion = useMapScroll('.product-content > section')
   const [mapMode, setMapMode] = useState(() => (
     window.localStorage.getItem('urban-explorer-map-mode') === 'day' ? 'day' : 'night'
   ))
@@ -31,7 +34,7 @@ export function ProductPage({ product }) {
   const contactHref = `${import.meta.env.BASE_URL}#contact`
 
   return (
-    <div className={`app product-page product-${product.slug}`} data-map-mode={mapMode}>
+    <div className={`app product-page product-${product.slug}`} data-map-mode={mapMode} data-reduced-motion={reduceMotion}>
       <div
         className="site-map-background"
         style={{ '--site-map-image': `url(${assetUrl(mapImage)})` }}
@@ -39,9 +42,9 @@ export function ProductPage({ product }) {
       />
       <div className="site-map-wash" aria-hidden="true" />
       <Header mapMode={mapMode} onToggleMapMode={toggleMapMode} />
-      <main>
+      <main className="product-content">
         <section className="product-hero"><div className="container product-hero-grid">
-          <div><p className="product-eyebrow">{product.category}</p><h1>{product.title}</h1><p className="product-intro">{product.intro}</p>
+          <div><p className="product-eyebrow">{product.category}</p><h1><SpotlightText text={product.title} dimColor="#000000" brightColor="#ffffff" /></h1><p className="product-intro">{product.intro}</p>
             <div className="product-actions"><a className="btn btn-primary" href={contactHref}>{product.primaryCta}</a><a className="btn btn-secondary" href="#data-show">{product.secondaryCta}</a></div>
           </div>
           <aside className="product-proof-card"><span>Built for</span><strong>{product.audience}</strong><ul>{product.proof.map((item) => <li key={item}>{item}</li>)}</ul></aside>
@@ -91,6 +94,7 @@ export function ProductPage({ product }) {
 
         <ProductDataShow
           initialView={product.dataView}
+          productName={product.name}
           artwork={product.visuals?.showcase}
           artworkAlt={`${product.name} operational control surface`}
         />
@@ -98,7 +102,7 @@ export function ProductPage({ product }) {
         <VisualOverview
           compact
           productName={product.name}
-          image={product.visuals?.portfolio}
+          image={product.visuals?.portfolio || product.visuals?.workflow}
         />
 
         <section className="product-section"><div className="container product-two-column"><div><p className="product-kicker">Capabilities</p><h2>Built around the work—not a generic dashboard.</h2></div><ul className="product-capabilities">{product.capabilities.map((item) => <li key={item}>{item}</li>)}</ul></div></section>
