@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cicciobastardo67.github.io/urban-explorer-labs/sitemap.xml

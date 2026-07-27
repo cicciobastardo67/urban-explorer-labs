@@ -11,3 +11,4 @@ BRAND_SYSTEM.md
 WEBSITE_PLAN.md
 *.log
 .DS_Store
+tmp/

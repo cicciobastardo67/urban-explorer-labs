@@ -95,8 +95,8 @@ export function Hero({ mapMode = 'day' }) {
             >
               <SpotlightText
                 text={'Intelligent automation.\nBuilt for Cambodia.\nKept under your control.'}
-                dimColor="#000000"
-                brightColor="#ffffff"
+                dimColor={mapMode === 'night' ? '#dcecff' : '#06101f'}
+                brightColor={mapMode === 'night' ? '#ffffff' : '#2855e8'}
               />
             </h1>
             <p className="body-text" style={{

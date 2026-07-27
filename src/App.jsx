@@ -10,6 +10,9 @@ import { productPages } from './productData'
 import { assetUrl } from './utils/assetUrl'
 import { useState } from 'react'
 import { useMapScroll } from './hooks/useMapScroll'
+import { HomeAbout } from './components/HomeAbout'
+import { HomeFaq } from './components/HomeFaq'
+import { AboutPage } from './components/AboutPage'
 
 function HomePage() {
   const reduceMotion = useMapScroll('.site-content > section')
@@ -43,6 +46,8 @@ function HomePage() {
         <Section01 />
         <Section02 />
         <Section03 />
+        <HomeAbout />
+        <HomeFaq />
         <Section04 />
       </main>
       <Footer />
@@ -53,6 +58,7 @@ function HomePage() {
 function App() {
   const slug = window.location.pathname.split('/').filter(Boolean).at(-1)
   const product = productPages[slug]
+  if (slug === 'about') return <AboutPage />
   return product ? <ProductPage product={product} /> : <HomePage />
 }
 

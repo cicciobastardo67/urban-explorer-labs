@@ -17,12 +17,26 @@ export function Header({ mapMode = 'day', onToggleMapMode }) {
     return unsubscribe
   }, [scrollY])
 
+  useEffect(() => {
+    if (!mobileOpen) return undefined
+    const previousOverflow = document.body.style.overflow
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setMobileOpen(false)
+    }
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [mobileOpen])
+
   const home = import.meta.env.BASE_URL
   const navLinks = [
     { href: `${home}#systems`, label: 'Systems' },
     { href: `${home}#work`, label: 'Work' },
     { href: `${home}#approach`, label: 'Approach' },
-    { href: `${home}#about`, label: 'About' },
+    { href: `${home}about/`, label: 'About' },
   ]
 
   return (

@@ -13,7 +13,7 @@ export default defineConfig({
         main: resolve('index.html'),
         luyagent: resolve('luyagent/index.html'),
         khmeradv: resolve('khmeradv/index.html'),
-        khaudit: resolve('khaudit/index.html'),
+        about: resolve('about/index.html'),
         hermesPost: resolve('hermes-post/index.html'),
         kramos: resolve('kramos/index.html'),
       },

@@ -65,7 +65,7 @@ function KhmerADVView() {
   return <div className="data-layout data-layout--agency">
     <aside className="data-pane data-campaigns"><h3>Campaigns</h3>{['Hotel launch', 'Retail weekend', 'Factory recruitment'].map((item, index) => <div className={index === 0 ? 'is-selected' : ''} key={item}><span>{item}</span><small>{index === 0 ? 'Run in review' : 'Ready'}</small></div>)}</aside>
     <section className="data-pane data-pipeline"><div className="data-pane__heading"><h3>Production pipeline</h3><span>Hotel launch</span></div><ol>{stages.map(([name, status], index) => <li key={name}><span>0{index + 1}</span><strong>{name}</strong><Status>{status}</Status></li>)}</ol></section>
-    <section className="data-pane data-delivery"><h3>Channel delivery</h3>{[['Facebook', 'Ready'], ['Instagram', 'Ready'], ['LinkedIn', 'In review'], ['Telegram', 'Ready'], ['TikTok', 'Permission check']].map(([channel, status]) => <div key={channel}><span>{channel}</span><Status>{status}</Status></div>)}</section>
+    <section className="data-pane data-delivery"><h3>Channel delivery</h3>{[['Facebook', 'Ready'], ['Instagram', 'Ready'], ['LinkedIn', 'In review'], ['Telegram', 'Ready']].map(([channel, status]) => <div key={channel}><span>{channel}</span><Status>{status}</Status></div>)}</section>
   </div>
 }
 

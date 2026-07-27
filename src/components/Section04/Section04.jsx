@@ -11,6 +11,8 @@ const needOptions = [
   { value: 'infrastructure', label: 'Private automation infrastructure' },
 ]
 
+const CONTACT_EMAIL = 'dcgcc1967@gmail.com'
+
 export function Section04() {
   const [ref, isVisible] = useScrollReveal({ threshold: 0.15, rootMargin: '0px 0px -100px 0px' })
   const [formState, setFormState] = useState({
@@ -24,13 +26,27 @@ export function Section04() {
     setFormState(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setStatus('submitting')
-    await new Promise(r => setTimeout(r, 1500))
-    setStatus('success')
-    setFormState({ name: '', email: '', company: '', role: '', need: '', message: '' })
-    setTimeout(() => setStatus('idle'), 5000)
+
+    if (!formRef.current?.reportValidity()) return
+
+    const needLabel = needOptions.find((option) => option.value === formState.need)?.label || formState.need
+    const subject = `Private demo request - ${formState.company || formState.name}`
+    const body = [
+      `Name: ${formState.name}`,
+      `Email: ${formState.email}`,
+      `Company: ${formState.company || 'Not provided'}`,
+      `Role: ${formState.role || 'Not provided'}`,
+      `Area: ${needLabel}`,
+      '',
+      'Workflow or challenge:',
+      formState.message,
+    ].join('\n')
+
+    setStatus('opening')
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.setTimeout(() => setStatus('idle'), 1200)
   }
 
   return (
@@ -70,7 +86,7 @@ export function Section04() {
             display: 'flex', alignItems: 'flex-start', gap: '24px', marginBottom: '48px',
           }}>
             <MeshText
-              text="04"
+              text="05"
               className="section-number section-number--mesh"
               colorSplit
               customColors={['#2855e8', '#8bcbff']}
@@ -108,10 +124,10 @@ export function Section04() {
             marginBottom: '40px',
             maxWidth: '400px',
           }}>
-            Tell us about it. We'll show you how private automation can help.
+            Tell us what the workflow is, who does it today and roughly how long it takes. That is enough for a first conversation. If we think you do not need us, we will say so in the reply.
           </p>
 
-          <form ref={formRef} onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <form ref={formRef} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div>
                 <label htmlFor="name" className="label" style={{ display: 'block', marginBottom: '8px' }}>
@@ -253,30 +269,25 @@ export function Section04() {
 
             <button
               type="submit"
-              disabled={status === 'submitting'}
+              disabled={status === 'opening'}
               className="btn btn-primary"
               style={{ width: 'fit-content', minWidth: '200px' }}
             >
-              {status === 'submitting' ? (
+              {status === 'opening' ? (
                 <>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ animation: 'spin 1s linear infinite' }}>
                     <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
                     <path d="M12 2a10 10 0 0 1 10 10" strokeLinecap="round" />
                   </svg>
-                  Sending…
-                </>
-              ) : status === 'success' ? (
-                <>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                    <polyline points="22 4 12 14.01 9 11.01" />
-                  </svg>
-                  Sent — we'll be in touch
+                  Opening email…
                 </>
               ) : (
                 'Request a private demo'
               )}
             </button>
+            <p className="contact-form-note">
+              We use this only to reply. We do not sell it or add you to a mailing list. This opens your email application; nothing is stored by this website. If it does not open, email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+            </p>
           </form>
         </motion.div>
 

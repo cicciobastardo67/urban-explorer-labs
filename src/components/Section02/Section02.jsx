@@ -467,6 +467,18 @@ export function Section02() {
 
         <VisualOverview />
 
+        <div className="engagement-steps">
+          <p>Verified inputs. Product-specific automation. Human quality control. The work in the middle is specific to the job, and a person signs off before anything leaves.</p>
+          <h3>How an engagement actually runs</h3>
+          <ol>{[
+            ['We look at the workflow.', 'One workflow that is costing your team hours.'],
+            ['We tell you if we are the wrong answer.', 'Some workflows need a process change before automation.'],
+            ['We scope one pilot.', 'One brand, one shop or one document family.'],
+            ['We run it with you and measure it.', 'Four weeks, with your team, on real material.'],
+            ['You decide whether to expand.', 'From measurements, not from a demo.'],
+          ].map(([title, copy], index) => <li key={title}><span>0{index + 1}</span><strong>{title}</strong><p>{copy}</p></li>)}</ol>
+        </div>
+
         {/* Proof Bands */}
         <div className="proof-bands" style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
           {displayedProofs.map((proof, i) => (

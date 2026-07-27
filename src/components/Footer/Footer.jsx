@@ -94,7 +94,7 @@ export function Footer() {
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <li><a href={`${import.meta.env.BASE_URL}#approach`} style={{ color: 'var(--ink)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Approach</a></li>
               <li><a href={`${import.meta.env.BASE_URL}#work`} style={{ color: 'var(--ink)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>Work</a></li>
-              <li><a href={`${import.meta.env.BASE_URL}#about`} style={{ color: 'var(--ink)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>About</a></li>
+              <li><a href={`${import.meta.env.BASE_URL}about/`} style={{ color: 'var(--ink)', fontSize: '15px', lineHeight: 1.5, transition: 'color var(--transition-fast)' }}>About</a></li>
             </ul>
           </nav>
 
@@ -111,8 +111,8 @@ export function Footer() {
               Let's talk
             </h3>
             <address style={{ fontStyle: 'normal', color: 'var(--muted)', fontSize: '15px', lineHeight: 1.7 }}>
-              <a href="mailto:hello@urbanexplorerlabs.com" style={{ color: 'var(--ink)', transition: 'color var(--transition-fast)' }}>
-                hello@urbanexplorerlabs.com
+              <a href="mailto:dcgcc1967@gmail.com" style={{ color: 'var(--ink)', transition: 'color var(--transition-fast)' }}>
+                dcgcc1967@gmail.com
               </a>
               <br />
               Phnom Penh, Cambodia

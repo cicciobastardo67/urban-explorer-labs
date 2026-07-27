@@ -10,7 +10,7 @@ const principles = [
     id: 'local-first',
     number: '01',
     title: 'Local-first',
-    description: 'Data stays in-country. Systems run in your environment.',
+    description: 'Data stays in-country. Systems run in your environment. Where an outside service is needed, the product page names it instead of hiding it behind “cloud”.',
     artwork: 'images/principles/local-first-artwork.png',
     artworkAlt: 'Local server infrastructure contained within Cambodia',
     icon: (
@@ -25,7 +25,7 @@ const principles = [
     id: 'human-approved',
     number: '02',
     title: 'Human-approved',
-    description: 'Important actions require human review and clear accountability.',
+    description: 'Important actions require human review and clear accountability. The approval step is structural: a payment, post or finding waits for a named person.',
     artwork: 'images/principles/human-approved-artwork.png',
     artworkAlt: 'Automated system waiting for a human approval decision',
     icon: (
@@ -42,7 +42,7 @@ const principles = [
     id: 'evidence-linked',
     number: '03',
     title: 'Evidence-linked',
-    description: 'Every output links to sources, documents, and audit trails.',
+    description: 'Every output links to sources, documents and audit trails. A finding without a source is not stored; approvals and overrides keep the reason attached.',
     artwork: 'images/principles/evidence-linked-artwork.png',
     artworkAlt: 'Evidence-linked output connected to source documents and audit trail',
     icon: (
@@ -60,7 +60,7 @@ const principles = [
     id: 'khmer-ready',
     number: '04',
     title: 'Khmer-ready',
-    description: 'Built for Khmer language, local regulations, and cultural context.',
+    description: 'Built for Khmer language, local regulations and cultural context. Khmer is a first-class output, not a translation pass at the end.',
     artwork: 'images/principles/khmer-ready-artwork.png',
     artworkAlt: 'Khmer language workstation with Cambodian regulatory document',
     icon: (
@@ -257,6 +257,7 @@ export function Section03() {
             </motion.div>
           ))}
         </div>
+        <div className="approach-boundaries"><p className="product-kicker">What we will not do</p><ul><li>Publish, pay or file without a person.</li><li>Claim a channel works before the account has permission.</li><li>Put a number on a page that we have not measured.</li><li>Call a pilot successful when the measurements say otherwise.</li></ul></div>
       </div>
     </section>
   )

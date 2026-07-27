@@ -12,6 +12,7 @@ const systems = [
     category: 'Sales Automation',
     name: 'LUYAGENT',
     description: 'Telegram sales automation that connects catalog, cart, payment review, confirmation and human handoff.',
+    operator: 'For a seller running one shop on Telegram.',
     artwork: 'images/systems/luyagent-artwork.png',
     artworkAlt: 'LUYAGENT commerce automation connecting catalog, cart, review and human handoff',
     steps: ['Catalog', 'Cart', 'Review', 'Handoff'],
@@ -22,6 +23,7 @@ const systems = [
     category: 'Agency Media Operations',
     name: 'KhmerADV',
     description: 'Multi-brand campaign production, approval and publishing from one controlled agency workspace.',
+    operator: 'For an agency team running several client brands.',
     artwork: 'images/systems/khmeradv-artwork.png',
     artworkAlt: 'KhmerADV multi-brand campaign network with production, approval and publishing',
     steps: ['Brands', 'Production', 'Approval', 'Publish'],
@@ -32,6 +34,7 @@ const systems = [
     category: 'Small Business Content',
     name: 'Hermes Post',
     description: 'A simple idea-to-post assistant for shops, bloggers, creators and owner-led businesses.',
+    operator: 'For one business keeping its own content going.',
     artwork: 'images/systems/hermes-post-artwork.png',
     artworkAlt: 'Hermes Post transforming a business idea into a finished social post',
     steps: ['Idea', 'Draft', 'Review', 'Post'],
@@ -42,6 +45,7 @@ const systems = [
     category: 'Compliance & Documents',
     name: 'KramOS',
     description: 'Evidence-first document compliance with deterministic checks and human approval for Cambodian operations.',
+    operator: 'For a compliance reviewer who has to show their sources.',
     artwork: 'images/systems/kramos-artwork.png',
     artworkAlt: 'KramOS evidence vault connecting documents, deterministic checks and human approval',
     steps: ['Evidence', 'Checks', 'Approval', 'Record'],
@@ -234,6 +238,7 @@ function SystemRow({ system, index }) {
         </div>
 
         <p className="system-description">{system.description}</p>
+        <p className="system-operator"><strong>{system.operator}</strong></p>
 
         <ol className="system-flow" aria-label={`${system.name} workflow`}>
           {system.steps.map((step) => (
@@ -314,6 +319,8 @@ export function Section01() {
             <WeightHoverText label="Four systems. One accountable foundation." />
           </h2>
         </motion.div>
+
+        <p className="systems-framing">Four systems, built separately, for four different jobs. They share one rule: the software does the repetitive work and then hands the decision back to a named person. Nothing publishes, confirms a payment or files a finding on its own.</p>
 
         <motion.div
           className="journey-rail"
